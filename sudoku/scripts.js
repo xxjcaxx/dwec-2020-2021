@@ -13,7 +13,7 @@ function Sudoku(numeros) {
           [5, 8, 6, 4, 9, 7, 2, 3, 1],
           [1, 3, 4, 2, 0, 5, 7, 6, 9],
       ]
-  } else {
+  } else { 
 
   }
 }
