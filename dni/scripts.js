@@ -23,7 +23,7 @@ Dni.prototype.calcularLletra = function(dni) {
    let numero = parseInt(dni) % 23;
    let lletra = lletres[numero];
    return lletra;
-}
+};
  
 /*function calcularLletra(dni) {
    let numero = parseInt(dni) % 23;
