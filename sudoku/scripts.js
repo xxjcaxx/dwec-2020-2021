@@ -55,16 +55,23 @@ Sudoku.prototype.validar = function () {
   function validar9(fila) {
       fila.sort();
       for (let j = 0; j < 9; j++) {
-          if (fila[j] != j + 1) { valida = false; };
+          if (fila[j] != j + 1) { 
+            valida = false; 
+            return false;
+          };
       }
+      return true;
   }
   console.log('**************************************');
   //console.log(this.numeros);
 
   for (let i = 0; i < 9; i++) { // Validació de files
       let fila = this.numeros[i].slice();
-      validar9(fila);
-
+      if(!validar9(fila)){
+        console.log('NO');
+       // document.getElementById(`celda${i}-0`).parentNode.children.style.background = '#faa';
+      }
+      
   }
 
   for (let i = 0; i < 9; i++) { // Validació de columnes
