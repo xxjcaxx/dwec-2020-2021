@@ -102,7 +102,7 @@ Sudoku.prototype.validar = function () {
 };
 
 let sudoku;
- 
+  
 (function () {
    "use strict";
    document.addEventListener("DOMContentLoaded", function () {
