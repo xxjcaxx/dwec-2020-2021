@@ -69,17 +69,29 @@ Sudoku.prototype.validar = function () {
       let fila = this.numeros[i].slice();
       if(!validar9(fila)){
         console.log('NO');
-       // document.getElementById(`celda${i}-0`).parentNode.children.style.background = '#faa';
+        filaDOM = document.getElementById(`celda${i}-0`).parentNode.children;
+        for (let i=0;i<filaDOM.length;i++){
+            filaDOM[i].style.background = '#F00';
+        }
       }
       
   }
 
   for (let i = 0; i < 9; i++) { // Validació de columnes
       let columna = [];
+      let columnaDOM = [];
+
       for (let j = 0; j < 9; j++) {
           columna.push(this.numeros[j][i]);
+          columnaDOM.push(document.getElementById(`celda${j}-${i}`));
       }
-      validar9(columna);
+      //validar9(columna);
+      if(!validar9(columna)){
+        console.log('NO');
+        for (let i=0;i<columnaDOM.length;i++){
+            columnaDOM[i].style.background = '#F00';
+        }
+      }
 
   }
 
@@ -87,12 +99,20 @@ Sudoku.prototype.validar = function () {
   for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
           let quadrat = [];
+          let quadratDOM = [];
           for (let k = 0; k < 3; k++) {
               for (let l = 0; l < 3; l++) {
                   quadrat.push(this.numeros[i * 3 + k][j * 3 + l]);
+                  quadratDOM.push(document.getElementById(`celda${i*3+k}-${j*3+l}`));
               }
           }
-          validar9(quadrat);
+         // validar9(quadrat);
+         if(!validar9(quadrat)){
+            console.log('NO');
+            for (let i=0;i<quadratDOM.length;i++){
+                quadratDOM[i].style.background = '#F00';
+            }
+          }
 
       }
   }
@@ -129,7 +149,7 @@ function validar() {
                    console.log('no'+valor+'dfg');
                }
                else {
-                   celda.style.background = '#FFFFFF';
+                   celda.style.background = null;
                }
        }
    }
@@ -144,7 +164,7 @@ function validar() {
            document.getElementById('tablasudoku').style.background = '#AAFFAA';
        }
        else{
-           document.getElementById('tablasudoku').style.background = '#FFAAAA';
+          // document.getElementById('tablasudoku').style.background = '#FFAAAA';
        }
    }
    return false;

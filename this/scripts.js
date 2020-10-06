@@ -32,7 +32,7 @@ var Person = function(name) {
       );
       colours.forEach(function (element, index, array) {
         console.log(this, that, index, element, array);
-        // this és undefined
+        // this és el que s'ha clicat
         // that és el que s'ha clicat
       }, this);
 
@@ -125,7 +125,7 @@ p.getInfo();
 
 // Cas 2
 var getInfo = p.getInfo;
-// getInfo(); dona error
+//getInfo(); //dona error
 
 // Cas 3
 var p2 = {name:'T', surname:'800', getInfo: p.getInfo}
