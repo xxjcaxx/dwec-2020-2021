@@ -1,6 +1,6 @@
 // factorial simple
 let contador = 0;
-function factorial(n){
+function factorial(n){   
     contador++;
     if(n == 2) return 2;
     else return n*factorial(n-1);
