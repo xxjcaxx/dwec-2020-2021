@@ -165,6 +165,7 @@ function validar() {
        }
        else{
           // document.getElementById('tablasudoku').style.background = '#FFAAAA';
+          document.getElementById('tablasudoku').style.background = null;
        }
    }
    return false;
