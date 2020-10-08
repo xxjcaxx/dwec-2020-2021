@@ -1,5 +1,6 @@
 function Sudoku(numeros) {
   this.numeros = [];
+
   if (numeros == false) {
       // Generar un sudoku
       this.numeros = [
@@ -9,7 +10,7 @@ function Sudoku(numeros) {
           [7, 1, 2, 5, 6, 9, 3, 8, 4],
           [3, 6, 8, 7, 1, 4, 9, 2, 5],
           [4, 5, 9, 8, 2, 3, 6, 1, 7],
-          [9, 2, 7, 1, 3, 6, 4, 5, 8],
+          [9, 2, 7, 1, 3, 6, 4, 5, 0],  //falten els 8
           [5, 8, 6, 4, 9, 7, 2, 3, 1],
           [1, 3, 4, 2, 0, 5, 7, 6, 9],
       ]
@@ -25,12 +26,14 @@ Sudoku.prototype.dibujar = function (cont) {
       if (i == 2 | i == 5) fila.className = 'separador';
       for (let j = 0; j < 9; j++) {
           let celda = document.createElement('td');
+          celda.sudoku = this;
           celda.id = `celda${i}-${j}`;
           let div = document.createElement('div');
           celda.appendChild(div);
           if (this.numeros[i][j] > 0) div.innerText = this.numeros[i][j];
           else {
               celda.contentEditable = true;
+              celda.addEventListener('focusout',this.validarCelda);
           }
           fila.appendChild(celda);
           if (j == 2 | j == 5) { celda.className = 'separador' };
@@ -44,10 +47,18 @@ Sudoku.prototype.traspasar = function () {
   for (let i = 0; i < 9; i++) {
       for (let j = 0; j < 9; j++) {
           let celda = document.getElementById(`celda${i}-${j}`);
-          this.numeros[i][j] = celda.innerText;
+          this.numeros[i][j] = parseInt(celda.innerText);
       }
   }
 };
+
+Sudoku.prototype.validarCelda = function validarCelda(event){
+    //console.log(this);
+    //console.log(this.sudoku);
+    this.sudoku.traspasar();
+    this.sudoku.validar();
+  }
+
 Sudoku.prototype.validar = function () {
   //validar files
   let valida = true;
@@ -116,8 +127,14 @@ Sudoku.prototype.validar = function () {
 
       }
   }
-
-  console.log(valida);
+  if (valida) {
+    document.getElementById('tablasudoku').style.background = '#AAFFAA';
+}
+else{
+   // document.getElementById('tablasudoku').style.background = '#FFAAAA';
+   document.getElementById('tablasudoku').style.background = null;
+}
+  //console.log(valida);
   return valida;
 };
 
@@ -130,6 +147,14 @@ let sudoku;
        console.log(contenedor);
        sudoku = new Sudoku(false);
        sudoku.dibujar(contenedor);
+
+       function cambiarColor(){
+        this.style.color='#F00';
+        console.log(this);
+        this.removeEventListener('click',cambiarColor);
+       }
+       let hola = document.querySelector('#hola');
+       hola.addEventListener('click',cambiarColor);
    });
 })();
  
@@ -143,12 +168,12 @@ function validar() {
             let valor = celda.innerText[0];  // de vegades clava un salt de linia
             
                let regEx = /^[1-9]$/;
-               if (!regEx.test(valor)) {
+               if (!regEx.test(valor) && valor!='') {
                    formulariOk = false;
                    celda.style.background = '#FFAAAA';
-                   console.log('no'+valor+'dfg');
                }
                else {
+                   
                    celda.style.background = null;
                }
        }
@@ -160,13 +185,7 @@ function validar() {
        sudoku.traspasar();
        // Validar el sudoku
        let validat = sudoku.validar();
-       if (validat) {
-           document.getElementById('tablasudoku').style.background = '#AAFFAA';
-       }
-       else{
-          // document.getElementById('tablasudoku').style.background = '#FFAAAA';
-          document.getElementById('tablasudoku').style.background = null;
-       }
+       
    }
    return false;
   }
