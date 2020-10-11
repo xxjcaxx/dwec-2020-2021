@@ -10,6 +10,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="scripts.js"></script>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <div id="header">
@@ -17,7 +18,20 @@
     </div>
 
     <div id="content">
-      <button id="button">Alert Name</button>
+      <form action="">
+        <label for="ipXarxa">IP Xarxa</label> <input type="text" name="ipXarxa">
+        <label for="mascara">Màscara</label> <input type="text" name="mascara">
+        
+      </form>
+      <button id="button">Pulsar</button>
+      <div id="xarxa">
+        <div id="PC1" class="pc">
+          <span class="name">PC1</span>
+          <span class="ip">192.168.9.23</span>
+          <button class="buttonPc">⬆</button>
+          <button class="buttonPc">⬇</button>
+        </div>
+      </div>
     </div>
     <div id="footer"></div>
   </body>
