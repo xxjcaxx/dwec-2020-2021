@@ -4,7 +4,7 @@ class Numero {
         this.celda = celda;
         this.x = x;
         this.y = y;
-        this.quadrat = quadrat;
+        //this.quadrat = quadrat;
     }
 }
 
@@ -48,7 +48,8 @@ function Sudoku(numeros) {
                 });
               }
 
-              this.numeros[i][j] = new  Numero(numero, celda,i,j, 0);
+              this.numeros[i][j] = new  Numero(numero, celda,j,i, 0);
+              celda.numero = this.numeros[i][j];
           }
       }
 }
@@ -74,117 +75,154 @@ Sudoku.prototype.traspasar = function () {
   for (let i = 0; i < 9; i++) {
     for (let j = 0; j < 9; j++) {
      // let celda = document.getElementById(`celda${i}-${j}`);
-      this.numeros[i][j].n = parseInt( this.numeros[i][j].celda.innerText);
+      this.numeros[i][j].n = parseInt(this.numeros[i][j].celda.innerText);
       
     }
   }
-  console.log(this.numeros);
+  //console.log(this.numeros);
 };
 
 Sudoku.prototype.validarCelda = function validarCelda(event) {
+
+    if (this.innerText.length > 0) {
+  // copiar el sudoku en el array
+  this.sudoku.traspasar();
+
+
 // Validar que siguen números i estiga complet
-let formulariOk = true;
+let formulariOk = 'filled';
 for (let i = 0; i < 9; i++) {
   for (let j = 0; j < 9; j++) {
-      let numero = this.sudoku.numeros[i][j];
+    //let valor = this.sudoku.numeros[i][j].n;
+    let celda = this.sudoku.numeros[i][j].celda;
     //let celda = document.getElementById(`celda${i}-${j}`);
-    let valor = numero.celda.innerText;
+    let valor = celda.innerText;
     let regEx = /^[1-9]$/;
     if (!regEx.test(valor) ) {
-      formulariOk = false;
-      if(valor.length === 1) numero.celda.classList.add("mal");
+        //console.log('No formulario');
+      formulariOk = 'wrong';
+      if(valor.length === 1) celda.classList.add("regular");
     } else {
-      numero.celda.classList.remove("mal");
+      celda.classList.remove("mal"); celda.classList.remove("regular");
     }
   }
 }
 // Validar el sudoku
-if (formulariOk) {
-  // copiar el sudoku en el array
-  this.sudoku.traspasar();
+if (formulariOk === 'filled') {
+
   // Validar el sudoku
   this.sudoku.validar();
 } else {  
     // Formulari no complet, validem sols files columnes i quadrats complets
- /*   let filaCelda, columnaCelda, quadratCelda;
-    filaCelda = this.parentNode.parentNode;
-    console.log(filaCelda);
-    for (let i=0;i<9;i++){
-        filaCelda.children[i].classList.add('regular');
-    }*/
+    let filaCelda, columnaCelda, quadratCelda;
+    //console.log(this);
+    filaCelda = this.parentNode.numero.y;
+    let filaVal = this.sudoku.validarParts('fila',filaCelda,0);
+
+    columnaCelda = this.parentNode.numero.x;
+    let columnaVal = this.sudoku.validarParts('columna',0,columnaCelda);  
+
+    quadratCelda = {
+        y: Math.floor(this.parentNode.numero.y/3),
+        x: Math.floor(this.parentNode.numero.x/3) 
+    }
+    let quadratVal = this.sudoku.validarParts('quadrat',quadratCelda.y,quadratCelda.x);
 }
-
-
+    }
 };
 
-Sudoku.prototype.validar = function () {
-  //validar files
-  let valida = true;
+Sudoku.prototype.validarParts = function (tipo,y,x) {
 
-  function validar9(fila) {
-    fila.sort();
-    let val = fila.filter((item,index) => item == index+1).length == 9;
-    if (!val) valida = false;
-   /* for (let j = 0; j < 9; j++) {
-      if (fila[j] != j + 1) {
-        valida = false;
-        return false;
+    function validar9(part) {
+        part.sort();
+        let val = part.filter((item,index) => item == index+1).length == 9;
+        return val;
       }
-    }*/
-    return val;
-    //return true;
-  }
-  //console.log("**************************************");
-  //console.log(this.numeros);
+    function completa(part){
+        let val = part.filter((item) => isNaN(item)).length == 0;
+        return val;
+    }
 
-  for (let i = 0; i < 9; i++) {
-    // Validació de files
-    let fila = this.numeros[i].map( (item)=> item.n ).slice();
+if(tipo === 'fila'){
+    let fila = this.numeros[y].map( (item)=> item.n ).slice();
+    if (completa(fila)) {
     if (!validar9(fila)) {
-      //console.log("NO FILA");
-      filaDOM = this.numeros[i]; //document.getElementById(`celda${i}-0`).parentNode.children;
+      console.log("NO FILA");
+      filaDOM = this.numeros[y]; //document.getElementById(`celda${i}-0`).parentNode.children;
       for (let i = 0; i < filaDOM.length; i++) {
           filaDOM[i].celda.classList.add('mal');
       }
+      return false;
     }
-  }
-
-  for (let i = 0; i < 9; i++) {
-    // Validació de columnes
+} else { return false; }
+}
+if(tipo === 'columna'){
     let columna = [];
     let columnaDOM = [];
 
     for (let j = 0; j < 9; j++) {
-      columna.push(this.numeros[j][i].n);
-      columnaDOM.push(this.numeros[j][i].celda);
+      columna.push(this.numeros[j][x].n);
+      columnaDOM.push(this.numeros[j][x].celda);
     }
+   // console.log(columna);
     //validar9(columna);
+    if (completa(columna)) {
     if (!validar9(columna)) {
-      //console.log("NO columna");
+      console.log("NO columna");
       for (let i = 0; i < columnaDOM.length; i++) {
         columnaDOM[i].classList.add('mal');
       }
-    }
-  }
+      return false;
 
-  // Validació de quadrats
-  for (let i = 0; i < 3; i++) {
-    for (let j = 0; j < 3; j++) {
-      let quadrat = [];
+    }
+} else { return false}
+}
+if(tipo === 'quadrat'){
+    let quadrat = [];
       let quadratDOM = [];
       for (let k = 0; k < 3; k++) {
         for (let l = 0; l < 3; l++) {
-          quadrat.push(this.numeros[i * 3 + k][j * 3 + l].n);
-          quadratDOM.push(this.numeros[i * 3 + k][j * 3 + l].celda);
+          quadrat.push(this.numeros[y * 3 + k][x * 3 + l].n);
+          quadratDOM.push(this.numeros[y * 3 + k][x * 3 + l].celda);
         }
       }
       // validar9(quadrat);
+      if (completa(quadrat)){
       if (!validar9(quadrat)) {
-        //console.log("NO quadrat");
+        console.log("NO quadrat",quadrat);
         for (let i = 0; i < quadratDOM.length; i++) {
             quadratDOM[i].classList.add('mal');
         }
+      return false;
+
       }
+    } else {return false}
+}
+return true;
+}
+
+Sudoku.prototype.validar = function () {
+  //validar files
+  let valida = true;
+    // Validació de files
+  for (let i = 0; i < 9; i++) {
+     if(!this.validarParts('fila',i,0)){
+        valida = false; //console.log('fila no');
+     }
+  }
+// Validació de columnes
+  for (let i = 0; i < 9; i++) {
+    if(!this.validarParts('columna',0,i)){
+        valida = false; //console.log('columna no');
+     }
+    
+  }
+  // Validació de quadrats
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+        if(!this.validarParts('quadrat',i,j)){
+            valida = false; //console.log('quadrat no');
+         }
     }
   }
   if (valida) {
@@ -195,7 +233,7 @@ Sudoku.prototype.validar = function () {
     document.getElementById("tablasudoku").classList.remove('bien');
     document.getElementById("tablasudoku").classList.add('mal');
   }
-  //console.log(valida);
+  console.log(valida);
   return valida;
 };
 
@@ -217,7 +255,7 @@ let sudoku;
         4, 5, 9, 0, 2, 3, 6, 1, 7,
         9, 2, 7, 1, 3, 6, 4, 5, 0, //falten els 8
         5, 8, 6, 4, 9, 7, 2, 3, 1,
-        1, 3, 4, 2, 0, 5, 7, 6, 9,]);
+        1, 3, 4, 0, 0, 5, 7, 6, 9,]);
     sudoku.dibujar(contenedor);
   });
 })();
