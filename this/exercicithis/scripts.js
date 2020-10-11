@@ -37,4 +37,4 @@ class Xarxa {
 
 /// TODO Fer que quan polsem els botons de pujar o baixar 
 /// s'incremente o decremente la IP si la màscara de xarxa ho permet
-/// Reordenar els PCs en funció de la IP
+/// Reordenar els PCs en funció de la IP 
