@@ -7,7 +7,9 @@ $(function () {
                  "p",    // Selector
                  { nombre: "John", apellido: "doe" },  // paràmetres opcionals
                  function(e) { // e contè les dades de l'esdeveniment
+                 $(this).hide();
                     $(this).text(e.data.nombre + " " + e.data.apellido);
+                    $(this).show(3000);
                     // els parametres estan en .data
                  }
   );
@@ -15,7 +17,6 @@ $(function () {
   $(document).on('mouseover','p',function () {
     $(this).trigger('select');    
   });
-
 
 
 
