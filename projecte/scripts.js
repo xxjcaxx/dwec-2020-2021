@@ -9,7 +9,18 @@ class Product {
     dibujar(){
         let p = document.createElement('div');
         p.classList.add('product');
-        p.innerHTML = `<span>${this.name}</span><img src="${this.photo}"/>`;
+        p.innerHTML = `
+        <div class="col-sm">
+        <div class="card" style="width: 18rem;">
+  <img src="${this.photo}" class="card-img-top" alt="${this.name}">
+  <div class="card-body">
+    <h5 class="card-title">${this.name}</h5>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="btn btn-primary">Añadir a carrito</a>
+  </div>
+</div>
+</div>
+        `;
         return p;
     }
 
@@ -61,7 +72,7 @@ class cart {
         ///////////// Mostrar els productes 
         let content = document.querySelector('#content');
         let productList = document.createElement('div');
-        productList.classList.add('productList');
+        productList.classList.add('productList','row');
         content.appendChild(productList);
 
         for (let p of productos) {
