@@ -1,0 +1,11 @@
+<h2>Proves *ngIf</h2>
+<div style="width: 400px;" *ngIf="mostrar">
+  <h3>{{frase.autor}}</h3>
+  <p>{{frase.mensaje}}</p></div>
+<button (click) = "mostrar = !mostrar">Mostra/Ocultar</button>
+
+<h2>Proves *ngFor</h2>
+<ul>
+  <li *ngFor="let cita of citas; let i = index">{{ i }} {{ cita }}</li>
+</ul>
+
