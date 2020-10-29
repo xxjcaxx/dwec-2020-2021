@@ -54,3 +54,6 @@ for(let i=0;i<20;i++){
    llistaGenerada[i]=dni;
 }
 console.log(llistaGenerada);*/
+
+
+document.cookie = "username=John Doe; expires=Thu, 18 Dec 2021 12:00:00 UTC; path=/";

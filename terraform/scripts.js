@@ -1,7 +1,30 @@
-
-
 (() => {
     "use strict"; // Prova a descomentar
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires="+d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+      }
+      
+      function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+          }
+        }
+        return "";
+      }
+      
+  
+
 
     class Player {
         constructor(id, avatar, name, planets) {
@@ -12,24 +35,27 @@
         }
     }
     class Planet {
-        constructor(id, image, name, player, nPlanet, sun,
+        constructor(
+            /*id, image, name, player, nPlanet, sun,
             averageTemperature, oxigen, co2, water,
-            material, energy, gravity, airDensity) {
-            this.id = id;
-            this.image = image;
-            this.name = name;
-            this.player = player;
-            this.nPlanet = nPlanet;
-            this.sun = sun;
-            this.averageTemperature = averageTemperature;
-            this.oxigen = oxigen;
-            this.co2 = co2;
-            this.water = water;
-            this.material = material;
-            this.energy = energy;
-            this.gravity = gravity;
-            this.airDensity = airDensity;
+            material, energy, gravity, airDensity*/
+            ) {
+            this.id = 'id';
+            this.image = 'image';
+            this.name = 'name';
+            this.player = 'player';
+            this.n_planet = 'nPlanet';
+            this.sun = 'sun';
+            this.average_temperature = 'averageTemperature';
+            this.oxigen = 'oxigen';
+            this.co2 = 'co2';
+            this.water = 'water';
+            this.material = 'material';
+            this.energy = 'energy';
+            this.gravity = 'gravity';
+            this.air_density = 'airDensity';
         }
+        
         paint() {
             let div = document.querySelector('#content');
             let plantilla = `<div class="card" style="width: 18rem;">
@@ -105,12 +131,12 @@
                 if (req.status == 200) {
                     //console.log(req.responseText);
                     let planets = JSON.parse(req.responseText);
-                   // console.log(planets);
+                    console.log(planets);
 
                     for (let p of planets.result) {
-                        let planeta = new Planet(p.id, p.image, p.name, p.player, p.n_planet, p.sun,
-                            p.average_temperature, p.oxigen, p.co2, p.water,
-                            p.material, p.energy, p.gravity, p.airDensity);
+                    
+                            let planeta = new Planet();
+                            planeta = Object.assign(planeta,p);
                         planeta.paint();
                     }
                 }
@@ -124,6 +150,16 @@
 
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelector('#nav-home').addEventListener('click',home);
-        home();
+        var user = getCookie("username");
+            if (user != "") {
+                home();
+            } else {
+              user = prompt("Please enter your name:", "");
+              if (user != "" && user != null) {
+                setCookie("username", user, 365);
+              }
+            }
+          
+        
     });
 })();
