@@ -79,7 +79,10 @@ var Person = function(name) {
 
     var pepe = new Person('pepe');
     var boton = document.getElementById('button');
-    boton.addEventListener('click', pepe.sayHi);
+    boton.persona = pepe;
+    boton.addEventListener('click', function(){
+      this.persona.sayHi();
+    });
   });
 })();
 
