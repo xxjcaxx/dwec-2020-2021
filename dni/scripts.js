@@ -75,3 +75,6 @@ for(let i=0;i<20;i++){
       document.querySelector('#sensores').appendChild(sensor.element);
    });
 })();
+
+  
+ 
