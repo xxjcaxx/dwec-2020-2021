@@ -137,3 +137,13 @@ p2.getInfo();
 // Cas 4
 getInfo.call(p);
 
+
+makeRequest('GET', 'http://example.com')
+.then(function (datums) {
+  console.log(datums);
+})
+.catch(function (err) {
+  console.error('Augh, there was an error!', err.statusText);
+});
+
+
