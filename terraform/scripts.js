@@ -1,7 +1,30 @@
-
-
 (() => {
     "use strict"; // Prova a descomentar
+
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires="+d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+      }
+      
+      function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+          }
+        }
+        return "";
+      }
+      
+  
+
 
     class Player {
         constructor(id, avatar, name, planets) {
@@ -12,24 +35,27 @@
         }
     }
     class Planet {
-        constructor(id, image, name, player, nPlanet, sun,
+        constructor(
+            /*id, image, name, player, nPlanet, sun,
             averageTemperature, oxigen, co2, water,
-            material, energy, gravity, airDensity) {
-            this.id = id;
-            this.image = image;
-            this.name = name;
-            this.player = player;
-            this.nPlanet = nPlanet;
-            this.sun = sun;
-            this.averageTemperature = averageTemperature;
-            this.oxigen = oxigen;
-            this.co2 = co2;
-            this.water = water;
-            this.material = material;
-            this.energy = energy;
-            this.gravity = gravity;
-            this.airDensity = airDensity;
+            material, energy, gravity, airDensity*/
+            ) {
+            this.id = 'id';
+            this.image = 'image';
+            this.name = 'name';
+            this.player = 'player';
+            this.n_planet = 'nPlanet';
+            this.sun = 'sun';
+            this.average_temperature = 'averageTemperature';
+            this.oxigen = 'oxigen';
+            this.co2 = 'co2';
+            this.water = 'water';
+            this.material = 'material';
+            this.energy = 'energy';
+            this.gravity = 'gravity';
+            this.air_density = 'airDensity';
         }
+        
         paint() {
             let div = document.querySelector('#content');
             let plantilla = `<div class="card" style="width: 18rem;">
@@ -105,12 +131,12 @@
                 if (req.status == 200) {
                     //console.log(req.responseText);
                     let planets = JSON.parse(req.responseText);
-                   // console.log(planets);
+                    console.log(planets);
 
                     for (let p of planets.result) {
-                        let planeta = new Planet(p.id, p.image, p.name, p.player, p.n_planet, p.sun,
-                            p.average_temperature, p.oxigen, p.co2, p.water,
-                            p.material, p.energy, p.gravity, p.airDensity);
+                    
+                            let planeta = new Planet();
+                            planeta = Object.assign(planeta,p);
                         planeta.paint();
                     }
                 }
@@ -121,9 +147,55 @@
         req.send('{}');
     }
 
+    function login(){
+        
+        let form = `<form onsubmit="return false;" class="bg-dark text-light">
+        <div class="form-group ">
+          <label for="exampleInputEmail1">Email address</label>
+          <input type="email" class="form-control" id="InputEmail" aria-describedby="emailHelp">
+          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input type="password" class="form-control" id="InputPassword">
+        </div>
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input" id="exampleCheck1">
+          <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        </div>
+        <button  class="btn btn-primary" id="btn-login">Submit</button>
+      </form>`
+      let formElement = document.createElement('div');
+      formElement.innerHTML = form;
+      formElement.classList.add('col');
+      let div = document.querySelector('#content');
+      div.innerHTML = '';
+      div.appendChild(formElement);
+
+      document.querySelector('#btn-login').addEventListener('click',() => {
+          console.log(this);
+          let user = document.querySelector('#InputEmail').value;
+          let pass = document.querySelector('#InputPassword').value;
+          if (user != "" && user != null) {
+            setCookie("username", user, 365);
+            home();
+          }
+      })
+
+       /* if (user != "" && user != null) {
+          setCookie("username", user, 365);
+        }*/
+    }
+
 
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelector('#nav-home').addEventListener('click',home);
-        home();
+        let user = getCookie("username");
+            if (user != "") {
+                home();
+            } else {
+           login();
+            }
+    
     });
 })();
