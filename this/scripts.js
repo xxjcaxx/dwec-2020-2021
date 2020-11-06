@@ -1,11 +1,11 @@
-var Person = function(name) {
+/*var Person = function (name) {
   this.name = name;
 
   // lets assign this to that :)
   var that = this;
-  this.sayHi = function() {
+  this.sayHi = function () {
     // That is used to call the foo property
-    console.log(this,that,that.name);
+    console.log(this, that, that.name);
   };
 };
 
@@ -14,7 +14,7 @@ var Person = function(name) {
   document.addEventListener("DOMContentLoaded", function () {
     var colours = ["red", "green", "blue"];
     document.getElementById("header").addEventListener("click", function () {
-      
+
       //////////Exemple amb forEach   
       // this és una referència al clicat
       var that = this;
@@ -66,21 +66,21 @@ var Person = function(name) {
       var usesthis = new usesThis("John");
       console.log(
         "UsesThat thinks it's called " +
-          usesthat.returnMe().myName +
-          "\r\n" +
-          "UsesThis thinks it's called " +
-          usesthis.returnMe().myName
+        usesthat.returnMe().myName +
+        "\r\n" +
+        "UsesThis thinks it's called " +
+        usesthis.returnMe().myName
       );
 
     });
 
-/////////// Exemple amb Botons
+    /////////// Exemple amb Botons
 
 
     var pepe = new Person('pepe');
     var boton = document.getElementById('button');
     boton.persona = pepe;
-    boton.addEventListener('click', function(){
+    boton.addEventListener('click', function () {
       this.persona.sayHi();
     });
   });
@@ -92,33 +92,33 @@ var Person = function(name) {
 var car = {};
 car.starter = {};
 
-car.start = function(){
-    var that = this;
+car.start = function () {
+  var that = this;
 
-    // you can access car.starter inside this method with 'this'
-    this.starter.active = false;
+  // you can access car.starter inside this method with 'this'
+  this.starter.active = false;
 
-    var activateStarter = function(){
-        // 'this' now points to the global scope
-        // 'this.starter' is undefined, so we use 'that' instead.
-        that.starter.active = true;
+  var activateStarter = function () {
+    // 'this' now points to the global scope
+    // 'this.starter' is undefined, so we use 'that' instead.
+    that.starter.active = true;
 
-        // you could also use car.starter, but using 'that' gives
-        // us more consistency and flexibility
-    };
+    // you could also use car.starter, but using 'that' gives
+    // us more consistency and flexibility
+  };
 
-    activateStarter();
+  activateStarter();
 
 };
 
 
 ////////////////
 class Character {
-  constructor(){
+  constructor() {
     this.name = 'Sarah';
     this.surname = 'Connor';
   }
-  getInfo(){
+  getInfo() {
     console.log(`Are you ${this.name} ${this.surname} ?`);
   }
 }
@@ -131,19 +131,34 @@ var getInfo = p.getInfo;
 //getInfo(); //dona error
 
 // Cas 3
-var p2 = {name:'T', surname:'800', getInfo: p.getInfo}
+var p2 = { name: 'T', surname: '800', getInfo: p.getInfo }
 p2.getInfo();
 
 // Cas 4
 getInfo.call(p);
+*/
+(function () {
+  "use strict"; // Prova a descomentar
+  document.addEventListener("DOMContentLoaded", function () {
+    class Sunpanel {
+      constructor(power) {
+        this.power = power;
+      }
+      showPower() {
+        console.log(`${this.power}W`);
+      }
+    }
+
+    let sun1 = new Sunpanel(1000);
+    console.log(sun1);
 
 
-makeRequest('GET', 'http://example.com')
-.then(function (datums) {
-  console.log(datums);
-})
-.catch(function (err) {
-  console.error('Augh, there was an error!', err.statusText);
-});
-
-
+    let buttonPower = document.querySelector('#buttonPower');
+    buttonPower.addEventListener('click', sun1.showPower);
+    buttonPower.addEventListener('click', () => sun1.showPower());
+    buttonPower.addEventListener('click', function () { sun1.showPower(); });
+    buttonPower.showPower = sun1.showPower;
+    buttonPower.addEventListener('click', () => this.showPower());
+    buttonPower.addEventListener('click', function () { this.showPower(); });
+  });
+})();

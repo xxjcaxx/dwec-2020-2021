@@ -23,6 +23,16 @@
         return "";
       }
       
+
+      function descargar (method, url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.open(method, url);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {   callback(null, xhr.response); };
+        xhr.onerror = function () {   callback(xhr.response); };
+        xhr.send('{}');
+    }
+
   
 
 
@@ -32,6 +42,23 @@
             this.avatar = avatar;
             this.name = name;
             this.planets = planets;
+        }
+        asignar(err,response){
+            if (err) { throw err; }
+            let playerObject = JSON.parse(response).result[0];
+            this.avatar = playerObject.avatar;
+            this.name = playerObject.name;
+            this.planets = playerObject.planets;
+            document.querySelector('#nav-avatar').querySelector('img').src = "data:image/png;base64, "+this.avatar;
+            for (let i of this.planets) {
+                descargar('POST',
+                'http://10.100.23.100:8069/terraform/terraform/terraform.planet/'+i,
+                (err,response)=>{
+                    let planets = JSON.parse(response).result[0];
+                    let planeta = new Planet();
+                    planeta = Object.assign(planeta,planets);
+                    planeta.paint();});
+            }
         }
     }
     class Planet {
@@ -94,57 +121,17 @@
         }
     }
 
-    function home(){
-        let player = new Player(1,'','',[]);
-        var req1 = new XMLHttpRequest();
-        
-        req1.open('POST', 'http://10.100.23.100:8069/terraform/terraform/terraform.player/'+player.id, true);
-        req1.setRequestHeader('Content-Type', 'application/json');
-        req1.onreadystatechange = function (aEvt) {
-            console.log(req.readyState);
-            if (req1.readyState == 4) {
-                if (req1.status == 200) {
-                    //console.log(req1.responseText);
-                    let playerObject = JSON.parse(req1.responseText).result[0];
-                    //console.log(player, playerObject);
-                    player.avatar = playerObject.avatar;
-                    player.name = playerObject.name;
-                    player.planets = playerObject.planets;
-                    document.querySelector('#nav-avatar').querySelector('img').src = "data:image/png;base64, "+player.avatar;
-                    console.log(player.planets);
-                }
-                else
-                    console.log("Error loading page\n");
-            }
-        };
-        req1.send('{}');
 
+
+    function home(){
         let div = document.querySelector('#content');
         div.innerHTML = '';
-        var req = new XMLHttpRequest();
-        
-        req.open('POST', 'http://10.100.23.100:8069/terraform/terraform/planets/20', true);
-        req.setRequestHeader('Content-Type', 'application/json');
-        req.onreadystatechange = function (aEvt) {
-            //console.log(req.readyState);
-            if (req.readyState == 4) {
-                if (req.status == 200) {
-                    //console.log(req.responseText);
-                    let planets = JSON.parse(req.responseText);
-                    console.log(planets);
 
-                    for (let p of planets.result) {
-                    
-                            let planeta = new Planet();
-                            planeta = Object.assign(planeta,p);
-                        planeta.paint();
-                    }
-                }
-                else
-                    console.log("Error loading page\n");
-            }
-        };
-        req.send('{}');
+        let player = new Player(1,'','',[]);
+        descargar('POST',
+        'http://10.100.23.100:8069/terraform/terraform/terraform.player/'+player.id,
+        (err,response)=> player.asignar(err,response));
+
     }
 
     function login(){
