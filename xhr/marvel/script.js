@@ -4,21 +4,24 @@
     let lim = 20;
 
     document.addEventListener("DOMContentLoaded", function () {
-        function makeRequest(method, url, done) {
+
+        function makeRequest(method, url) {
+            return new Promise((resolve,reject)=>{
             var xhr = new XMLHttpRequest();
             xhr.open(method, url);
-            xhr.onload = function () { done(null, xhr.response); };
-            xhr.onerror = function () { done(xhr.response); };
+            xhr.onload = function () { resolve(xhr.response); };
+            xhr.onerror = function () { reject(xhr.response); };
             xhr.send();
+        });
         }
 
         function allCharacters(offset,limit) {
-            makeRequest('GET', `http://gateway.marvel.com/v1/public/characters?limit=${limit}&offset=${offset}&${apikey}`,
-                function (err, resultat) {
-                    if (err) { throw err; }
+            makeRequest('GET', `http://gateway.marvel.com/v1/public/characters?limit=${limit}&offset=${offset}&${apikey}`)
+            .then(
+                function (resultat) {
                     document.querySelector('#contenedor').innerHTML = '';
                     let llista = JSON.parse(resultat).data.results;
-                    console.log(llista);
+                    //console.log(llista);
                     for (let character of llista) {
                         let plantilla = `<div class="card" style="width: 18rem;">
                 <img src="${character.thumbnail.path}/standard_fantastic.${character.thumbnail.extension}" class="card-img-top" alt="...">
@@ -54,17 +57,16 @@
                         paginacioElement.appendChild(link);
 
                     }
-
-
-                });
+                }).catch((error)=> console.log(error));
+                
         }
 
         function characterDetails(id){
 
-            makeRequest('GET', `http://gateway.marvel.com/v1/public/characters/${id}?${apikey}`,
-            function (err, resultat) {
-                if (err) { throw err; }
-
+            makeRequest('GET', `http://gateway.marvel.com/v1/public/characters/${id}?${apikey}`)
+            .then(
+            function (resultat) {
+                let characterElement = document.createElement('div');
                 let character = JSON.parse(resultat).data.results[0];
                 let comics = '';
                 for (let comic of character.comics.items){
@@ -84,7 +86,7 @@
               <a href="#" class="btn btn-primary">Return</a>
             </div>
           </div>`;
-                    let characterElement = document.createElement('div');
+                    
                     characterElement.innerHTML = plantilla;
                     characterElement.classList.add('col');
                     characterElement.querySelector('a').addEventListener('click',function(){
@@ -92,8 +94,30 @@
                     })
                    document.querySelector('#contenedor').innerHTML = '';
                     document.querySelector('#contenedor').appendChild(characterElement);
-                
-            });
+                    comics = character.comics.items.map(c => c.resourceURI );
+                    return comics.map((c)=> {
+                        makeRequest('GET', `${comic}?${apikey}`)
+                    })
+               
+
+            }).then(  //////////////////////TODO
+                (promesesComics)=>{
+                   console.log(promesesComics);
+                    comics.forEach(comic => {
+                        makeRequest('GET', `${comic}?${apikey}`)
+                        .then( (c) => {
+                            let details = JSON.parse(c).data.results[0];
+                           
+                            let plantilla = `Comic:${details.title} <br/>${details.description}`;
+                            let p = document.createElement('p');
+                            p.innerHTML = plantilla;
+                            p.classList.add('card-text')
+                            characterElement.appendChild(p)
+                        });
+                    });
+                }
+            )
+            .catch((error)=> console.log(error));
         }
 
         allCharacters(0,20);

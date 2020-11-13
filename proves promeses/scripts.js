@@ -42,7 +42,7 @@ function get(url) {
         resolve(req.response);
       } else {
         // Si no funciona rebutjar la promesa amb el text d'error
-        reject(Error(req.statusText));
+        reject(Error(req.statusText+' '+url));
       }
     };
     // Gestionar errors de xarxa
@@ -53,11 +53,11 @@ function get(url) {
     req.send();
   });
   // Espera a les dos funcions
-  return Promise.all([fakeNetworkWait, requestPromise]).then(function (
-    results
-  ) {
-    return results[1];
-  });
+  return Promise.all([fakeNetworkWait, requestPromise])
+        .then(function (results) 
+        {
+          return results[1];
+        });
 }
 
 function getJson(url) {
