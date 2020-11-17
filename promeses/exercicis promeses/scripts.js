@@ -86,7 +86,7 @@
             //});
 
             function restaurarP1(){
-                return new Promise((r)=>{ setTimeout(()=>{
+                let promesaRestaurar = new Promise((r)=>{ setTimeout(()=>{
                     let p1 = document.querySelector('#p1');
                     p1.innerHTML = 'P1 <img src="loading.gif" alt="">';
                     let pro1 = new Promise(function executar(resolver, rechazar) {
@@ -98,6 +98,7 @@
                     });
                     r();
                 },200)});
+                return promesaRestaurar;
             }
 
             function restaurarP2(){
@@ -134,6 +135,29 @@
             // després cridarà a una promesa per número que tardarà el mateix que eixe número
             // Quan passe el temps, escriurà el número en compte del gif
             // Fes que comencen totes les promeses de forma paral·lela.  
+
+            let p5 = document.querySelector('#p5');
+            p5.addEventListener('click', () => {
+                p5.innerHTML='';
+                let numeros = []
+                for(let i=0;i<100;i++){
+                    let numero = Math.round(10000*Math.random());
+                    numeros.push(numero);
+                }
+                console.log(numeros);
+                let promesas = numeros.map((n)=>{
+                    return new Promise((resolve,reject)=>{
+                        setTimeout(()=>{ 
+                            resolve();
+                        },n)
+                    }).then(()=>{
+                        p5.innerText += ` ${n}`;
+                    });
+                });
+                Promise.all(promesas).then((resultado)=> {
+                    console.log('Tots els numeros');
+                });
+            });
 
     });
 })();
