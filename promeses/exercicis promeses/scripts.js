@@ -159,5 +159,32 @@
                 });
             });
 
+
+            /////////////// fes el que fa p3 amb  async await
+            async function imprimirP6(array){
+                for(let i of array){
+                    console.log(`imprimint ${i}`);
+                    let res = await new Promise((resolve)=>{
+                        setTimeout(()=>{
+                            resolve();
+                        },1000);
+                    }).then(()=>{
+                        p6.innerText += ` ${i}`;
+                        return i; 
+                    });
+                    console.log(`imprimit ${res}`);
+                }
+            }
+
+
+            let p6 = document.querySelector('#p6');
+            p6.addEventListener('click', () => {
+                p6.innerHTML='';
+                let array = ['primera', 'segunda', 'tercera'];
+                console.log(array);
+                imprimirP6(array);
+                console.log('despres imprimir');
+            });
+
     });
 })();
