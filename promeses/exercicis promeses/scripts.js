@@ -178,11 +178,11 @@
 
 
             let p6 = document.querySelector('#p6');
-            p6.addEventListener('click', () => {
+            p6.addEventListener('click', async () => {
                 p6.innerHTML='';
                 let array = ['primera', 'segunda', 'tercera'];
                 console.log(array);
-                imprimirP6(array);
+                await imprimirP6(array);
                 console.log('despres imprimir');
             });
 
