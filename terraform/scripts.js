@@ -30,7 +30,7 @@ login as loginTemplate } from './plantilles.js';
           let planeta = new Planet();
           planeta = Object.assign(planeta, planets);
           planeta.paintCard();
-         // planeta.paintError(i);
+          //planeta.paintError(i);
         }, 
         (error)=>{   // fracaso
           console.log('Fallo'+error);
