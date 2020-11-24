@@ -1,18 +1,14 @@
 import { setCookie, getCookie } from './cookies.js';
-import { json } from './xhr.js';
-import { planetCard, planetDetails } from './plantilles.js';
+import { json, obtener } from './xhr.js';
+import { planetCard, 
+  planetDetails, planetError,
+login as loginTemplate } from './plantilles.js';
 
 (() => {
   "use strict";
 
   let url = 'http://10.100.23.100:8069/terraform/terraform';
-  let fetchOptions = {
-    method: 'post',
-    headers: { "Content-type": "application/json; charset=UTF-8" },
-    body: '{}'
-  };
-
-
+ 
   class Player {
     constructor(id, avatar, name, planets) {
       this.id = id;
@@ -29,13 +25,17 @@ import { planetCard, planetDetails } from './plantilles.js';
     async paintPlanets(){
       document.querySelector('#nav-avatar').querySelector('img').src = "data:image/png;base64, " + this.avatar;
       for (let i of this.planets) {
-       await fetch(`${url}/terraform.planet/${i}`, fetchOptions)
-          .then(json).then((response) => {
-            let planets = response.result[0];
-            let planeta = new Planet();
-            planeta = Object.assign(planeta, planets);
-            planeta.paintCard();
-          });
+        await obtener(`${url}/terraform.planet/${i}`,(response) => {
+          let planets = response.result[0];
+          let planeta = new Planet();
+          planeta = Object.assign(planeta, planets);
+          planeta.paintCard();
+         // planeta.paintError(i);
+        }, 
+        (error)=>{   // fracaso
+          console.log('Fallo'+error);
+          planeta.paintError(i);
+        })
       }
     }
   }
@@ -64,19 +64,36 @@ import { planetCard, planetDetails } from './plantilles.js';
       let div = document.querySelector('#content');
       let plantilla = planetCard(this); // funció importada
       this.element = document.createElement('div');
-      
-     // this.element.classList.add('col-sm-4');
-     // this.element.classList.add('mb-3');
-     // this.element.querySelector('a').addEventListener('click', () => { div.innerHTML = ''; this.details(); });
+      this.element.classList.add('card');
+      this.element.classList.add('m-1');
+      this.element.style = 'width: 12rem;';
+      this.element.innerHTML = plantilla;
       div.appendChild(this.element);
-      this.element.outerHTML = plantilla;
+      //this.element.outerHTML = plantilla;
+      this.element.querySelector('a').addEventListener('click', () => { div.innerHTML = ''; this.details();  });
+      
+    }
+    paintError(i) {
+      let div = document.querySelector('#content');
+      let plantilla = planetError(i); // funció importada
+      this.element = document.createElement('div');
+      this.element.classList.add('card');
+      this.element.classList.add('m-1');
+      this.element.style = 'width: 12rem;';
+      this.element.innerHTML = plantilla;
+      div.appendChild(this.element);
+      //this.element.outerHTML = plantilla;
+      
     }
     details() {
       let div = document.querySelector('#content');
       let plantilla = planetDetails(this);
       this.details = document.createElement('div');
+      this.element.classList.add('col');
       this.details.innerHTML = plantilla;
       div.appendChild(this.details);
+      
+      
 
     }
   }
@@ -87,31 +104,20 @@ import { planetCard, planetDetails } from './plantilles.js';
     let div = document.querySelector('#content');
     div.innerHTML = '';
     let player = new Player(10, '', '', []);
-    fetch(`${url}/terraform.player/${player.id}`, fetchOptions)
-      .then(json).then((response) => { 
-        player.assign(response);
-        player.paintPlanets();
-      });
+    obtener(`${url}/terraform.player/${player.id}`,(response) => {  // exito
+      player.assign(response);
+      player.paintPlanets();
+    }, 
+    (error)=>{   // fracaso
+      console.log('Fallo: '+error);
+      div.innerHTML=`<img src="./img/alderaan.gif" /><h3 class="text-light" >Error en la xarxa: ${error}</h3>`;
+    });
+
   }
 
   function login() {
 
-    let form = `<form onsubmit="return false;" class="bg-dark text-light">
-        <div class="form-group ">
-          <label for="exampleInputEmail1">Email address</label>
-          <input type="email" class="form-control" id="InputEmail" aria-describedby="emailHelp">
-          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-        </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input type="password" class="form-control" id="InputPassword">
-        </div>
-        <div class="form-group form-check">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1">
-          <label class="form-check-label" for="exampleCheck1">Check me out</label>
-        </div>
-        <button  class="btn btn-primary" id="btn-login">Submit</button>
-      </form>`
+    let form = loginTemplate();
     let formElement = document.createElement('div');
     formElement.innerHTML = form;
     formElement.classList.add('col');
