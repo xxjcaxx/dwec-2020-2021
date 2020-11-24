@@ -1,5 +1,5 @@
 import { setCookie, getCookie } from './cookies.js';
-import { json, obtener } from './xhr.js';
+import { json, obtener, remoteLogin } from './xhr.js';
 import { planetCard, 
   planetDetails, planetError,
 login as loginTemplate } from './plantilles.js';
@@ -129,6 +129,10 @@ login as loginTemplate } from './plantilles.js';
       //console.log(this);
       let user = document.querySelector('#InputEmail').value;
       let pass = document.querySelector('#InputPassword').value;
+
+      let login = remoteLogin(`${url}/login`,user,pass);
+      console.log(login);
+
       if (user != "" && user != null) {
         setCookie("username", user, 365);
         home();

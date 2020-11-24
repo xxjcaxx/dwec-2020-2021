@@ -1,4 +1,4 @@
-export { json, obtener };
+export { json, obtener, remoteLogin };
 
 
 function json(response) { return response.json()  }
@@ -16,6 +16,15 @@ function obtener(url,exito,fracaso) {
     .catch(fracaso);
 }
 
+function remoteLogin(url,user,pass) {
+  return fetch(url, {
+    method: 'post',
+    headers: { "Content-type": "application/json; charset=UTF-8" },
+    body: `{"jsonrpc":"2.0","method":"call","params":{"user":"${user}","password":"${pass}"}}`
+  })
+  .then(json).then((response)=>response)
+  .catch(()=>console.log('no login'));
+}
 
 
 
