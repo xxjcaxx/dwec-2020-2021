@@ -2,12 +2,15 @@ import { setCookie, getCookie } from './cookies.js';
 import { json, obtener, remoteLogin } from './xhr.js';
 import { planetCard, 
   planetDetails, planetError,
-login as loginTemplate } from './plantilles.js';
+login as loginTemplate } from './templates/plantilles.js';
+import { viewPlanet} from './views/views.js'
 
 (() => {
   "use strict";
 
   let url = 'http://10.100.23.100:8069/terraform/terraform';
+  window.app = {};
+  window.app.content = document.querySelector('#content');
  
   class Player {
     constructor(id, avatar, name, planets) {
@@ -59,9 +62,12 @@ login as loginTemplate } from './plantilles.js';
       this.energy = 'energy';
       this.gravity = 'gravity';
       this.air_density = 'airDensity';
+
+      this.view = new viewPlanet(this);
     }
     paintCard() {
-      let div = document.querySelector('#content');
+      this.view.viewCard();
+ /*     let div = document.querySelector('#content');
       let plantilla = planetCard(this); // funció importada
       this.element = document.createElement('div');
       this.element.classList.add('card');
@@ -71,10 +77,11 @@ login as loginTemplate } from './plantilles.js';
       div.appendChild(this.element);
       //this.element.outerHTML = plantilla;
       this.element.querySelector('a').addEventListener('click', () => { div.innerHTML = ''; this.details();  });
-      
+    */  
     }
     paintError(i) {
-      let div = document.querySelector('#content');
+      this.view.viewError();
+    /*  let div = document.querySelector('#content');
       let plantilla = planetError(i); // funció importada
       this.element = document.createElement('div');
       this.element.classList.add('card');
@@ -82,11 +89,12 @@ login as loginTemplate } from './plantilles.js';
       this.element.style = 'width: 12rem;';
       this.element.innerHTML = plantilla;
       div.appendChild(this.element);
-      //this.element.outerHTML = plantilla;
+     */
       
     }
     details() {
-      let div = document.querySelector('#content');
+      this.view.viewDetails();
+    /*  let div = document.querySelector('#content');
       let plantilla = planetDetails(this);
       this.details = document.createElement('div');
       this.element.classList.add('col');
@@ -94,7 +102,7 @@ login as loginTemplate } from './plantilles.js';
       div.appendChild(this.details);
       
       
-
+*/
     }
   }
 

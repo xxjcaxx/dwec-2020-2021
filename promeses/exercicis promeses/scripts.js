@@ -1,7 +1,6 @@
 (function () {
     "use strict";
     document.addEventListener("DOMContentLoaded", function () {
-
         let p1 = document.querySelector('#p1');
 
         let promesa1 = new Promise(function executar(resolver, rechazar) {
