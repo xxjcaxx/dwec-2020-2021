@@ -1,16 +1,16 @@
 import { setCookie, getCookie } from './cookies.js';
 import { json, obtener, remoteLogin } from './xhr.js';
-import { planetCard, 
-  planetDetails, planetError,
-login as loginTemplate } from './templates/plantilles.js';
-import { viewPlanet} from './views/views.js'
+import { planetCard, planetDetails, planetError, login as loginTemplate } from './templates/plantilles.js';
+import { viewPlanet, viewPages} from './views/views.js'
+import {Router} from './router.js'
 
 (() => {
   "use strict";
 
   let url = 'http://10.100.23.100:8069/terraform/terraform';
   window.app = {};
-  window.app.content = document.querySelector('#content');
+  window.app.url = url;
+  
  
   class Player {
     constructor(id, avatar, name, planets) {
@@ -18,28 +18,41 @@ import { viewPlanet} from './views/views.js'
       this.avatar = avatar;
       this.name = name;
       this.planets = planets;
+      this.planetsDict = {}
+      
+    }
+    load(){
+      return obtener(`${url}/terraform.player/${this.id}`, (response) => {  // exito
+        this.assign(response);
+         },
+        (error) => {   // fracaso
+            console.log('Fallo: ' + error);
+            app.content.innerHTML = `<img src="./img/alderaan.gif" /><h3 class="text-light" >Error en la xarxa: ${error}</h3>`;
+        });
     }
     assign(response) {
       let playerObject = response.result[0];
       this.avatar = playerObject.avatar;
       this.name = playerObject.name;
       this.planets = playerObject.planets;
+      
     }
     async paintPlanets(){
       document.querySelector('#nav-avatar').querySelector('img').src = "data:image/png;base64, " + this.avatar;
       for (let i of this.planets) {
-        await obtener(`${url}/terraform.planet/${i}`,(response) => {
-          let planets = response.result[0];
-          let planeta = new Planet();
-          planeta = Object.assign(planeta, planets);
+        let planeta = new Planet();
+        planeta.id = i;
+        await planeta.load().then(()=>{
+          this.planetsDict[planeta.id] = planeta;
           planeta.paintCard();
-          //planeta.paintError(i);
-        }, 
-        (error)=>{   // fracaso
-          console.log('Fallo'+error);
-          planeta.paintError(i);
-        })
+        }).catch(
+          (error)=>{   // fracaso
+            console.log('Fallo'+error);
+            planeta.paintError(i);
+          }
+        );
       }
+     // console.log(this.planetsDict);
     }
   }
   class Planet {
@@ -65,65 +78,49 @@ import { viewPlanet} from './views/views.js'
 
       this.view = new viewPlanet(this);
     }
+    load(){
+      return obtener(`${url}/terraform.planet/${this.id}`, (response) => {  // exito
+          let planets = response.result[0];
+          Object.assign(this, planets);
+         },
+        (error) => {   // fracaso
+            console.log('Fallo: ' + error);
+            
+        });
+    }
+
     paintCard() {
       this.view.viewCard();
- /*     let div = document.querySelector('#content');
-      let plantilla = planetCard(this); // funció importada
-      this.element = document.createElement('div');
-      this.element.classList.add('card');
-      this.element.classList.add('m-1');
-      this.element.style = 'width: 12rem;';
-      this.element.innerHTML = plantilla;
-      div.appendChild(this.element);
-      //this.element.outerHTML = plantilla;
-      this.element.querySelector('a').addEventListener('click', () => { div.innerHTML = ''; this.details();  });
-    */  
     }
     paintError(i) {
       this.view.viewError();
-    /*  let div = document.querySelector('#content');
-      let plantilla = planetError(i); // funció importada
-      this.element = document.createElement('div');
-      this.element.classList.add('card');
-      this.element.classList.add('m-1');
-      this.element.style = 'width: 12rem;';
-      this.element.innerHTML = plantilla;
-      div.appendChild(this.element);
-     */
-      
     }
     details() {
       this.view.viewDetails();
-    /*  let div = document.querySelector('#content');
-      let plantilla = planetDetails(this);
-      this.details = document.createElement('div');
-      this.element.classList.add('col');
-      this.details.innerHTML = plantilla;
-      div.appendChild(this.details);
+    }
+  }
+  class Sun {
+    constructor(){
       
-      
-*/
     }
   }
 
-
-
-  function home() {
-    let div = document.querySelector('#content');
-    div.innerHTML = '';
-    let player = new Player(10, '', '', []);
-    obtener(`${url}/terraform.player/${player.id}`,(response) => {  // exito
-      player.assign(response);
-      player.paintPlanets();
-    }, 
-    (error)=>{   // fracaso
-      console.log('Fallo: '+error);
-      div.innerHTML=`<img src="./img/alderaan.gif" /><h3 class="text-light" >Error en la xarxa: ${error}</h3>`;
-    });
-
+  app.checkPlayer = function checkPlayer(callback){
+    let user = getCookie("username");
+    if (user != "") {
+      let player = new Player(10, '', '', []);
+      app.player = player;
+      app.player.load().then(callback);
+    } else {
+      app.login();
+    }
   }
 
-  function login() {
+  app.home = function home() {
+    app.checkPlayer(app.viewPages.viewHome);
+  }
+
+  app.login = function login() {
 
     let form = loginTemplate();
     let formElement = document.createElement('div');
@@ -148,21 +145,32 @@ import { viewPlanet} from './views/views.js'
     })
   }
 
-  function logout() {
+  app.logout = function logout() {
     setCookie("username", 'user', -1);
     login();
   }
 
+  app.planet = function planet(id){
+    let planeta = new Planet();
+    planeta.id = id;
+    planeta.load().then(()=>app.checkPlayer(()=>planeta.details()));
+  }
+
+  app.sun = function sun(id){
+
+  }
+
 
   document.addEventListener("DOMContentLoaded", function () {
-    document.querySelector('#nav-home').addEventListener('click', home);
-    document.querySelector('#logout_button').addEventListener('click', logout);
-    let user = getCookie("username");
-    if (user != "") {
-      home();
-    } else {
-      login();
-    }
+
+    app.content = document.querySelector('#content'); // Sempre serà accessible per tots
+    app.viewPages = new viewPages(); // fer accessibles les pàgines
+    app.router = new Router();
+  
+    document.querySelector('#nav-home').addEventListener('click', ()=> app.router.load('home') );
+    document.querySelector('#logout_button').addEventListener('click', app.logout);
+
+  
 
   });
 })();
