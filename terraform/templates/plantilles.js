@@ -12,7 +12,7 @@ let planetCard = (planet) => `
   <a href="#" class="btn btn-primary">Details</a>
 `;
 
-let planetDetails = (planet) => `<div class="card" >
+let planetDetails = (planet) => `<div class="card w-50" >
 <img src="data:image/png;base64, ${planet.image}" class="card-img-top" alt="...">
 <h5 class="card-header">${planet.name}</h5>
     <div class="card-body">

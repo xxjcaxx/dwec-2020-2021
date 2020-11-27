@@ -2,7 +2,8 @@ import { setCookie, getCookie } from './cookies.js';
 import { json, obtener, remoteLogin } from './xhr.js';
 import { planetCard, planetDetails, planetError, login as loginTemplate } from './templates/plantilles.js';
 import { viewPlanet, viewPages} from './views/views.js'
-import {Router} from './router.js'
+import {Router} from './router.js';
+import {Model} from './model.js';
 
 (() => {
   "use strict";
@@ -10,33 +11,19 @@ import {Router} from './router.js'
   let url = 'http://10.100.23.100:8069/terraform/terraform';
   window.app = {};
   window.app.url = url;
-  
+
  
-  class Player {
+ 
+  class Player extends Model{
     constructor(id, avatar, name, planets) {
-      this.id = id;
+      super(`${url}/terraform.player`,id)
+      
       this.avatar = avatar;
       this.name = name;
       this.planets = planets;
       this.planetsDict = {}
-      
     }
-    load(){
-      return obtener(`${url}/terraform.player/${this.id}`, (response) => {  // exito
-        this.assign(response);
-         },
-        (error) => {   // fracaso
-            console.log('Fallo: ' + error);
-            app.content.innerHTML = `<img src="./img/alderaan.gif" /><h3 class="text-light" >Error en la xarxa: ${error}</h3>`;
-        });
-    }
-    assign(response) {
-      let playerObject = response.result[0];
-      this.avatar = playerObject.avatar;
-      this.name = playerObject.name;
-      this.planets = playerObject.planets;
-      
-    }
+
     async paintPlanets(){
       document.querySelector('#nav-avatar').querySelector('img').src = "data:image/png;base64, " + this.avatar;
       for (let i of this.planets) {
@@ -47,7 +34,7 @@ import {Router} from './router.js'
           planeta.paintCard();
         }).catch(
           (error)=>{   // fracaso
-            console.log('Fallo'+error);
+            console.log('Fallo: '+error);
             planeta.paintError(i);
           }
         );
@@ -55,13 +42,14 @@ import {Router} from './router.js'
      // console.log(this.planetsDict);
     }
   }
-  class Planet {
-    constructor(
+  class Planet extends Model {
+    constructor( id
       /*id, image, name, player, nPlanet, sun,
       averageTemperature, oxigen, co2, water,
       material, energy, gravity, airDensity*/
     ) {
-      this.id = 'id';
+      super(`${url}/terraform.planet`,id)
+      
       this.image = 'image';
       this.name = 'name';
       this.player = 'player';
@@ -75,20 +63,23 @@ import {Router} from './router.js'
       this.energy = 'energy';
       this.gravity = 'gravity';
       this.air_density = 'airDensity';
-
+      this.buildings = []; this.buildingsDetails = [];
       this.view = new viewPlanet(this);
     }
-    load(){
-      return obtener(`${url}/terraform.planet/${this.id}`, (response) => {  // exito
-          let planets = response.result[0];
-          Object.assign(this, planets);
-         },
-        (error) => {   // fracaso
-            console.log('Fallo: ' + error);
-            
-        });
-    }
 
+    loadDetails(){
+      console.log(this.buildings);
+      let buildings = this.buildings.map((b)=>{
+        return obtener(`${url}/terraform.building/${b}`,(response)=> response, (error) => console.log(error));
+      });
+      Promise.all(buildings).then((response)=> {
+        this.buildingsDict = {}; 
+        for(let bu of response){ this.buildingsDetails.push(bu.result[0])}
+      }).then(()=>{
+        console.log(this.buildingsDetails);
+      });
+    }
+ 
     paintCard() {
       this.view.viewCard();
     }
