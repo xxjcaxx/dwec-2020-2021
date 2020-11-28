@@ -17,14 +17,14 @@ class Router {
     initRouter(){
         const { location: {pathname = "/"}} = window; // object destructuring
         const URL = pathname === "/" ? "home" : pathname.replace("/","");
-        console.log({pathname,URL});
+        //console.log({pathname,URL});
         this.load(URL);
     }
     load(page = "home"){
         page = page[0]=='/' ? page.replace("/","") : page;
         let pageRest = page.split('/')[0];
         let id = page.split('/')[1];
-        console.log({page,pageRest,id});
+        //console.log({page,pageRest,id});
         if (pageRest == undefined) pageRest = page;
         if (id == undefined) id='';
 

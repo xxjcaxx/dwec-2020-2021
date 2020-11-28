@@ -8,7 +8,8 @@ import {Model} from './model.js';
 (() => {
   "use strict";
 
-  let url = 'http://10.100.23.100:8069/terraform/terraform';
+  //let url = 'http://10.100.23.100:8069/terraform/terraform';
+  let url = 'http://192.168.88.72:8069/terraform/terraform';
   window.app = {};
   window.app.url = url;
 
@@ -68,16 +69,29 @@ import {Model} from './model.js';
     }
 
     loadDetails(){
-      console.log(this.buildings);
-      let buildings = this.buildings.map((b)=>{
-        return obtener(`${url}/terraform.building/${b}`,(response)=> response, (error) => console.log(error));
+     
+      let buildings = this.buildings.map((b)=>{  // Descarreguar els edificis
+        return obtener(`${url}/terraform.building/${b}`,
+        (response)=> response, 
+        (error) => console.log(error))
+        .then((building)=> {  // una vegada descarregat un edifici cal descarregar els seus detalls
+          return obtener(`${url}/terraform.building_type/${building.result[0].name[0]}`, // detalls del tipus
+          (response)=>response.result[0],
+          (error) => console.log(error))
+          .then((name)=>{building.result[0].name=name; return building.result[0];});
+        });;
       });
-      Promise.all(buildings).then((response)=> {
-        this.buildingsDict = {}; 
-        for(let bu of response){ this.buildingsDetails.push(bu.result[0])}
-      }).then(()=>{
-        console.log(this.buildingsDetails);
+    
+      let planetaryChanges = fetch(`${url}/terraform.planetary_changes`,{
+        method: 'post',
+        headers: { "Content-type": "application/json; charset=UTF-8" },
+        body: `{"jsonrpc":"2.0","method":"call","params":{"f1":"planet.id","f2":"=","f3":"${this.id}"}}`
+      }).then(json).then((result)=>{
+        this.planetaryChanges = result.result;
+        //console.log('Dins de cada planeta ',this.planetaryChanges);
       });
+
+      return Promise.all([buildings,planetaryChanges]);
     }
  
     paintCard() {
@@ -99,7 +113,7 @@ import {Model} from './model.js';
   app.checkPlayer = function checkPlayer(callback){
     let user = getCookie("username");
     if (user != "") {
-      let player = new Player(10, '', '', []);
+      let player = new Player(1, '', '', []);
       app.player = player;
       app.player.load().then(callback);
     } else {
@@ -131,20 +145,24 @@ import {Model} from './model.js';
 
       if (user != "" && user != null) {
         setCookie("username", user, 365);
-        home();
+        app.home();
       }
     })
   }
 
   app.logout = function logout() {
     setCookie("username", 'user', -1);
-    login();
+    app.login();
   }
 
   app.planet = function planet(id){
     let planeta = new Planet();
     planeta.id = id;
-    planeta.load().then(()=>app.checkPlayer(()=>planeta.details()));
+    planeta.load().then(()=>{
+      //console.log('despres de load ',planeta.planetaryChanges);
+      app.checkPlayer(
+        ()=>planeta.details()
+        )});
   }
 
   app.sun = function sun(id){

@@ -12,16 +12,19 @@ let planetCard = (planet) => `
   <a href="#" class="btn btn-primary">Details</a>
 `;
 
-let planetDetails = (planet) => `<div class="card w-50" >
+let planetDetails = (planet) => {
+  //console.log(planet.planetaryChanges);
+  return `<div class="card w-75" >
 <img src="data:image/png;base64, ${planet.image}" class="card-img-top" alt="...">
 <h5 class="card-header">${planet.name}</h5>
     <div class="card-body">
         <h5 class="card-title">${planet.name}</h5>
-        <p class="card-text">Sun: ${planet.sun} Player: ${planet.player} nPlanet: ${planet.nPlanet}</p>
-        
+        <p class="card-text">Sun: ${planet.sun[1]} Player: ${planet.player[1]} nPlanet: ${planet.n_planet}</p>
+        <canvas id="myChart" width="400" height="400"></canvas>      
     </div>
 </div>
 `;
+}
 
 let planetError = (planet) => `
 <img src="img/alderaan.gif" class="card-img-top" alt="...">
