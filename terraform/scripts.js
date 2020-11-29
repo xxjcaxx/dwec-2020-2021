@@ -91,7 +91,12 @@ import {Model} from './model.js';
         //console.log('Dins de cada planeta ',this.planetaryChanges);
       });
 
-      return Promise.all([buildings,planetaryChanges]);
+      buildings.push(planetaryChanges); // afegir la promesa per a resoldrer-les totes juntes
+      
+      return Promise.all(buildings).then((res)=>{
+        //res sera un array d'edificis
+        this.buildingsDetails = res;
+      });
     }
  
     paintCard() {
