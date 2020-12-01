@@ -161,13 +161,14 @@ import {Model} from './model.js';
   }
 
   app.planet = function planet(id){
-    let planeta = new Planet();
-    planeta.id = id;
-    planeta.load().then(()=>{
+   // let planeta = new Planet();
+   // planeta.id = id;
+   let planeta = app.player.planetsDict[id]
+  //  planeta.load().then(()=>{
       //console.log('despres de load ',planeta.planetaryChanges);
       app.checkPlayer(
         ()=>planeta.details()
-        )});
+        );//});
   }
 
   app.sun = function sun(id){
