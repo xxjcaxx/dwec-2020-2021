@@ -161,6 +161,7 @@ import {Model} from './model.js';
   }
 
   app.planet = function planet(id){
+<<<<<<< HEAD
     //let planeta = new Planet();
    // planeta.id = id;
    let planeta = app.player.planetsDict[id];
@@ -169,6 +170,16 @@ import {Model} from './model.js';
       app.checkPlayer(
         ()=>planeta.details()
         )//});
+=======
+   // let planeta = new Planet();
+   // planeta.id = id;
+   let planeta = app.player.planetsDict[id]
+  //  planeta.load().then(()=>{
+      //console.log('despres de load ',planeta.planetaryChanges);
+      app.checkPlayer(
+        ()=>planeta.details()
+        );//});
+>>>>>>> 722a434c0b5e4bd736cfff3409ef55130b9d6679
   }
 
   app.sun = function sun(id){
