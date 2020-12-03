@@ -1,56 +1,56 @@
 import { setCookie, getCookie } from './cookies.js';
-import { json, obtener, remoteLogin } from './xhr.js';
+import { json, obtener, buscarObtener, remoteLogin } from './xhr.js';
 import { planetCard, planetDetails, planetError, login as loginTemplate } from './templates/plantilles.js';
-import { viewPlanet, viewPages} from './views/views.js'
-import {Router} from './router.js';
-import {Model} from './model.js';
+import { viewPlanet, viewPages } from './views/views.js'
+import { Router } from './router.js';
+import { Model } from './model.js';
 
 (() => {
   "use strict";
 
-  let url = 'http://10.100.23.100:8069/terraform/terraform';
+  const url = 'http://10.100.23.100:8069/terraform/terraform';
   //let url = 'http://192.168.88.72:8069/terraform/terraform';
   window.app = {};
   window.app.url = url;
 
- 
- 
-  class Player extends Model{
+
+
+  class Player extends Model {
     constructor(id, avatar, name, planets) {
-      super(`${url}/terraform.player`,id)
-      
+      super(`${url}/terraform.player`, id)
+
       this.avatar = avatar;
       this.name = name;
       this.planets = planets;
       this.planetsDict = {}
     }
 
-    async paintPlanets(){
+    async paintPlanets() {
       document.querySelector('#nav-avatar').querySelector('img').src = "data:image/png;base64, " + this.avatar;
       for (let i of this.planets) {
         let planeta = new Planet();
         planeta.id = i;
-        await planeta.load().then(()=>{
+        await planeta.load().then(() => {
           this.planetsDict[planeta.id] = planeta;
           planeta.paintCard();
         }).catch(
-          (error)=>{   // fracaso
-            console.log('Fallo: '+error);
+          (error) => {   // fracaso
+            console.log('Fallo: ' + error);
             planeta.paintError(i);
           }
         );
       }
-     // console.log(this.planetsDict);
+      // console.log(this.planetsDict);
     }
   }
   class Planet extends Model {
-    constructor( id
+    constructor(id
       /*id, image, name, player, nPlanet, sun,
       averageTemperature, oxigen, co2, water,
       material, energy, gravity, airDensity*/
     ) {
-      super(`${url}/terraform.planet`,id)
-      
+      super(`${url}/terraform.planet`, id)
+
       this.image = 'image';
       this.name = 'name';
       this.player = 'player';
@@ -68,37 +68,37 @@ import {Model} from './model.js';
       this.view = new viewPlanet(this);
     }
 
-    loadDetails(){
-     
-      let buildings = this.buildings.map((b)=>{  // Descarreguar els edificis
+    loadDetails() {
+
+      let buildings = this.buildings.map((b) => {  // Descarreguar els edificis
         return obtener(`${url}/terraform.building/${b}`,
-        (response)=> response, 
-        (error) => console.log(error))
-        .then((building)=> {  // una vegada descarregat un edifici cal descarregar els seus detalls
-          return obtener(`${url}/terraform.building_type/${building.result[0].name[0]}`, // detalls del tipus
-          (response)=>response.result[0],
+          (response) => response,
           (error) => console.log(error))
-          .then((name)=>{building.result[0].name=name; return building.result[0];});
-        });;
+          .then((building) => {  // una vegada descarregat un edifici cal descarregar els seus detalls
+            return obtener(`${url}/terraform.building_type/${building.result[0].name[0]}`, // detalls del tipus
+              (response) => response.result[0],
+              (error) => console.log(error))
+              .then((name) => { building.result[0].name = name; return building.result[0]; });
+          });;
       });
-    
-      let planetaryChanges = fetch(`${url}/terraform.planetary_changes`,{
+
+      let planetaryChanges = fetch(`${url}/terraform.planetary_changes`, {  // Es podria utilitzar buscarObtener
         method: 'post',
         headers: { "Content-type": "application/json; charset=UTF-8" },
         body: `{"jsonrpc":"2.0","method":"call","params":{"f1":"planet.id","f2":"=","f3":"${this.id}"}}`
-      }).then(json).then((result)=>{
+      }).then(json).then((result) => {
         this.planetaryChanges = result.result;
         //console.log('Dins de cada planeta ',this.planetaryChanges);
       });
 
       buildings.push(planetaryChanges); // afegir la promesa per a resoldrer-les totes juntes
-      
-      return Promise.all(buildings).then((res)=>{
+
+      return Promise.all(buildings).then((res) => {
         //res sera un array d'edificis
         this.buildingsDetails = res;
       });
     }
- 
+
     paintCard() {
       this.view.viewCard();
     }
@@ -109,13 +109,23 @@ import {Model} from './model.js';
       this.view.viewDetails();
     }
   }
-  class Sun {
-    constructor(){
-      
+  class Sun extends Model {
+    constructor(id) {
+      super(`${url}/terraform.sun`, id)
+    }
+    loadPlanets(){
+      let {planets} = this;
+      let promesesPlanetes = planets.map((p)=>{
+        let planeta = new Planet(p);
+        return planeta.load().then(()=>planeta);
+      }); 
+      return Promise.all(promesesPlanetes).then((response)=>
+        this.planetsDetails = response
+      )
     }
   }
 
-  app.checkPlayer = function checkPlayer(callback){
+  app.checkPlayer = function checkPlayer(callback) {
     let user = getCookie("username");
     if (user != "") {
       let player = new Player(1, '', '', []);
@@ -145,7 +155,7 @@ import {Model} from './model.js';
       let user = document.querySelector('#InputEmail').value;
       let pass = document.querySelector('#InputPassword').value;
 
-      let login = remoteLogin(`${url}/login`,user,pass);
+      let login = remoteLogin(`${url}/login`, user, pass);
       console.log(login);
 
       if (user != "" && user != null) {
@@ -160,31 +170,32 @@ import {Model} from './model.js';
     app.login();
   }
 
-  app.planet = function planet(id){
-<<<<<<< HEAD
-    //let planeta = new Planet();
-   // planeta.id = id;
-   let planeta = app.player.planetsDict[id];
-    //planeta.load().then(()=>{
-      console.log('despres de load ',planeta.planetaryChanges);
-      app.checkPlayer(
-        ()=>planeta.details()
-        )//});
-=======
-   // let planeta = new Planet();
-   // planeta.id = id;
-   let planeta = app.player.planetsDict[id]
-  //  planeta.load().then(()=>{
-      //console.log('despres de load ',planeta.planetaryChanges);
-      app.checkPlayer(
-        ()=>planeta.details()
-        );//});
->>>>>>> 722a434c0b5e4bd736cfff3409ef55130b9d6679
+  app.planet = function planet(id) {
+    let planeta = app.player.planetsDict[id];
+    app.checkPlayer(() => planeta.details());
   }
 
-  app.sun = function sun(id){
-
+  app.suns = function pageSuns() {
+    app.sunList = {};
+    buscarObtener(`${app.url}/terraform.sun`, 'id', '>', '0',
+      function exito(response) {
+        for (let sun of response.result) {
+          let sunAux  =  new Sun(sun.id);  
+          sunAux.assign(sun) 
+         
+          app.sunList[sun.id] = sunAux;
+        }
+      },
+      function fracaso(error) { console.log(error); })
+      .then(        // quan ja te els sols
+        ()=>{
+          console.log(app.sunList);
+          app.checkPlayer(app.viewPages.viewSuns);
+        }
+      );  
   }
+
+
 
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -192,11 +203,12 @@ import {Model} from './model.js';
     app.content = document.querySelector('#content'); // Sempre serà accessible per tots
     app.viewPages = new viewPages(); // fer accessibles les pàgines
     app.router = new Router();
-  
-    document.querySelector('#nav-home').addEventListener('click', ()=> app.router.load('home') );
+
+    document.querySelector('#nav-home').addEventListener('click', () => app.router.load('home'));
+    document.querySelector('#nav-suns').addEventListener('click', () => app.router.load('suns'));
     document.querySelector('#logout_button').addEventListener('click', app.logout);
 
-  
+
 
   });
 })();

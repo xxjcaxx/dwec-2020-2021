@@ -1,5 +1,5 @@
 export { planetCard, planetDetails, planetError
-, login, buildingCard }
+, login, buildingCard, sunTemplates }
 
 let planetCard = (planet) => `
 <img src="data:image/png;base64, ${planet.image}" class="card-img-top" alt="...">
@@ -77,7 +77,7 @@ let login = ()=> `<form onsubmit="return false;" class="bg-dark text-light">
 
 
 let buildingCard = (building)=> {
-  console.log(building);
+  //console.log(building);
   let img = `/img/${building.display_name.replaceAll(" ","_")}.png`;
   return `<div class="card">
   <img src="${img}" class="card-img-top" alt="...">
@@ -91,4 +91,20 @@ let buildingCard = (building)=> {
 <li class="list-group-item">Active: ${building.activo}</li>
 </ul>
 </div>`;
+}
+
+
+let sunTemplates = {  // ho fice en un objecte per exportar sols un
+  sunCard: (sun)=> { 
+    let {display_name,planets,coordinates} = sun;
+    
+    return `<div class="card">
+<div class="card-body">
+    <h5 class="card-title">${display_name}</h5>
+</div>
+<ul class="list-group list-group-flush">
+<li class="list-group-item">Coordinates: ${coordinates}</li>
+
+</ul>
+</div>`} 
 }

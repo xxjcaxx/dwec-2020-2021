@@ -1,4 +1,4 @@
-export { json, obtener, remoteLogin };
+export { json, obtener, buscarObtener, remoteLogin };
 
 
 function json(response) { return response.json()  }
@@ -12,6 +12,17 @@ let fetchOptions = {
 
 function obtener(url,exito,fracaso) {
     return fetch(url, fetchOptions)
+    .then(json).then(exito)
+    .catch(fracaso);
+}
+
+function buscarObtener(url,field,criterio,valor,exito,fracaso){
+  let fetchOptionsSearch = {
+     method: fetchOptions.method,
+     headers: fetchOptions.headers,
+     body: `{"jsonrpc":"2.0","method":"call","params":{"f1":"${field}","f2":"${criterio}","f3":"${valor}"}}`
+    };
+  return fetch(url, fetchOptionsSearch)
     .then(json).then(exito)
     .catch(fracaso);
 }

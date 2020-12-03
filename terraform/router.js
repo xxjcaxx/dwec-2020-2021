@@ -6,6 +6,9 @@ const paths = {
     },
     planet: {
         path: "/planet/", view: 'viewDetails'
+    },
+    suns: {
+        path: '/suns/', view: 'viewSuns'
     }
 }
 

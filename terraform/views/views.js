@@ -1,4 +1,5 @@
-import { planetCard, planetDetails, planetError, login, buildingCard } from '../templates/plantilles.js';
+import { planetCard, planetDetails, planetError, login, buildingCard, sunTemplates } from '../templates/plantilles.js';
+import { obtener, buscarObtener } from '../xhr.js';
 export { viewPlanet, viewPages }
 
 class viewPlanet {
@@ -132,6 +133,39 @@ class viewPlanet {
     }
 }
 
+class viewSun {
+    constructor(sun){
+        this.sun = sun;
+    }
+    viewCard(){
+        let plantilla = sunTemplates.sunCard(this.sun); 
+        let element = document.createElement('div');
+        element.classList.add('card');
+        element.classList.add('m-1');
+        element.style = 'width: 12rem;';
+        element.innerHTML = plantilla;
+        app.content.appendChild(element);
+        element.addEventListener('click', () => { 
+            console.log(this.sun);
+           this.viewDetails(element);
+        });
+    
+    }
+    viewDetails(element){
+        let details = document.createElement('div');
+        details.innerHTML = `${this.sun.planets}`;
+        this.sun.loadPlanets()
+            .then(()=>{
+                details.innerHTML = `${this.sun.planetsDetails.map(p=>{
+                    return `<p>${p.name}</p>`;
+                })}`;
+
+                element.append(details);
+            });
+            
+    }
+}
+
 class viewPages {
     constructor(){
 
@@ -139,5 +173,12 @@ class viewPages {
     viewHome() {
         app.content.innerHTML = '';
         app.player.paintPlanets();
+    }
+    viewSuns() {  //Pagina dels sols
+        app.content.innerHTML = '';
+        for (let sun of Object.entries(app.sunList)){
+            let vs = new viewSun(sun[1]);
+            vs.viewCard();
+        }
     }
 }
