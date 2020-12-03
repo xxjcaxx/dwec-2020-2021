@@ -152,15 +152,36 @@ class viewSun {
     
     }
     viewDetails(element){
-        let details = document.createElement('div');
-        details.innerHTML = `${this.sun.planets}`;
+ 
+        $("#sunSystemModal").modal('show');
+        $('#sunSystemModalLabel').html(`${this.sun.display_name}`);
         this.sun.loadPlanets()
             .then(()=>{
-                details.innerHTML = `${this.sun.planetsDetails.map(p=>{
-                    return `<p>${p.name}</p>`;
-                })}`;
-
-                element.append(details);
+                $("#svgSolarSystem").find("circle").remove();
+                $("#svgSolarSystem").find(".svgPlaneta").remove();
+                this.sun.planetsDetails.map(p=>{
+                    let centro = 350;
+                    let diametro = p.gravity*2;
+                    let posicion = p.n_planet*30+centro+(25-diametro/2)
+                    let imagePlanet = document.createElementNS('http://www.w3.org/2000/svg','image');
+                    imagePlanet.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href',`data:image/png;base64,${p.image_small}`);
+                    imagePlanet.setAttribute('x',posicion+'');
+                    imagePlanet.setAttribute('y','335');
+                    imagePlanet.setAttribute('class','svgPlaneta');
+                    imagePlanet.setAttribute('height',diametro+'');
+                    imagePlanet.setAttribute('width',diametro+'');
+                    let orbit = document.createElementNS('http://www.w3.org/2000/svg','circle');
+                    orbit.setAttribute('cx',centro+"");
+                    orbit.setAttribute('cy',centro+"");
+                    orbit.setAttribute('r',(p.n_planet*30+25)+'');
+                    orbit.setAttribute('stroke','grey');
+                    orbit.setAttribute('stroke-width','2');
+                    orbit.setAttribute('fill-opacity','0');
+                    $("#svgSolarSystem").append(orbit);
+                    $("#svgSolarSystem").append(imagePlanet);
+                    });
+               
+             
             });
             
     }
@@ -175,7 +196,7 @@ class viewPages {
         app.player.paintPlanets();
     }
     viewSuns() {  //Pagina dels sols
-        app.content.innerHTML = '';
+        app.content.innerHTML = sunTemplates.sunModal();
         for (let sun of Object.entries(app.sunList)){
             let vs = new viewSun(sun[1]);
             vs.viewCard();

@@ -106,5 +106,33 @@ let sunTemplates = {  // ho fice en un objecte per exportar sols un
 <li class="list-group-item">Coordinates: ${coordinates}</li>
 
 </ul>
-</div>`} 
+</div>
+`; },
+sunModal: (sun)=> {
+  return `<!-- Modal -->
+  <div class="modal fade" id="sunSystemModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="sunSystemModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body bg-dark ">
+        <svg width="700" height="700" id="svgSolarSystem" 
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink">
+       
+          <image id="svgSol" href="/img/sol.png" height="80" width="80" x="310" y="310"/>
+      </svg>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
 }

@@ -8,8 +8,8 @@ import { Model } from './model.js';
 (() => {
   "use strict";
 
-  const url = 'http://10.100.23.100:8069/terraform/terraform';
-  //let url = 'http://192.168.88.72:8069/terraform/terraform';
+ // const url = 'http://10.100.23.100:8069/terraform/terraform';
+  const url = 'http://192.168.88.72:8069/terraform/terraform';
   window.app = {};
   window.app.url = url;
 

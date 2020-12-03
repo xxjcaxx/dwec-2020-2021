@@ -1,0 +1,29 @@
+.boton {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+#fotos{
+    min-height: 210px;
+}
+
+.divFoto{
+    width: 200px;
+    height: 200px;
+    border: 1px solid #ddd;
+    padding: 2px;
+    margin: 2px;
+    display: inline-block;
+}
+
+.fotoGaleria{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
