@@ -8,8 +8,8 @@ import {Model} from './model.js';
 (() => {
   "use strict";
 
-  //let url = 'http://10.100.23.100:8069/terraform/terraform';
-  let url = 'http://192.168.88.72:8069/terraform/terraform';
+  let url = 'http://10.100.23.100:8069/terraform/terraform';
+  //let url = 'http://192.168.88.72:8069/terraform/terraform';
   window.app = {};
   window.app.url = url;
 
@@ -161,13 +161,14 @@ import {Model} from './model.js';
   }
 
   app.planet = function planet(id){
-    let planeta = new Planet();
-    planeta.id = id;
-    planeta.load().then(()=>{
-      //console.log('despres de load ',planeta.planetaryChanges);
+    //let planeta = new Planet();
+   // planeta.id = id;
+   let planeta = app.player.planetsDict[id];
+    //planeta.load().then(()=>{
+      console.log('despres de load ',planeta.planetaryChanges);
       app.checkPlayer(
         ()=>planeta.details()
-        )});
+        )//});
   }
 
   app.sun = function sun(id){

@@ -55,7 +55,7 @@ class viewPlanet {
         data.labels = this.planet.planetaryChanges.map((p)=>p.time);
 
         // emission
-        console.log(this.planet.planetaryChanges);
+       // console.log(this.planet.planetaryChanges);
         let emission = this.planet.planetaryChanges.map((p)=>p.emission)
         data.datasets.push({label:'Emission',data:emission, pointRadius: 0, borderColor: 'rgba(255,99,132,1)', fill:false,borderWidth:2})
 
