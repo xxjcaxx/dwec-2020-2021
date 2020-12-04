@@ -8,10 +8,11 @@ import { Model } from './model.js';
 (() => {
   "use strict";
 
-  //const url = 'http://10.100.23.100:8069/terraform/terraform';
-  const url = 'http://192.168.88.72:8069/terraform/terraform';
+  const url = 'http://10.100.23.100:8069/terraform/terraform';
+  //const url = 'http://192.168.88.72:8069/terraform/terraform';
   window.app = {};
   window.app.url = url;
+  app.planetsDict = {};
 
 
 
@@ -22,7 +23,7 @@ import { Model } from './model.js';
       this.avatar = avatar;
       this.name = name;
       this.planets = planets;
-      this.planetsDict = {}
+      //this.planetsDict = {}
     }
 
     async paintPlanets() {
@@ -31,7 +32,7 @@ import { Model } from './model.js';
         let planeta = new Planet();
         planeta.id = i;
         await planeta.load().then(() => {
-          this.planetsDict[planeta.id] = planeta;
+          app.planetsDict[planeta.id] = planeta;
           planeta.paintCard();
         }).catch(
           (error) => {   // fracaso
@@ -178,7 +179,7 @@ import { Model } from './model.js';
   }
 
   app.planet = function planet(id) {
-    let planeta = app.player.planetsDict[id];
+    let planeta = app.planetsDict[id];
     app.checkPlayer(() => planeta.details());
   }
 
@@ -213,6 +214,10 @@ import { Model } from './model.js';
         }
       },
       function fracaso(error) { console.log(error); })
+    /*  .then(()=>buscarObtener(`${app.url}/terraform.planet`, 'id', '>', '0', //
+
+
+      ))*/
       .then(        // quan ja te els sols
         ()=>{
           console.log(app.travelsList);

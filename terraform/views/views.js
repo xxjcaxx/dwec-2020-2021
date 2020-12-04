@@ -223,12 +223,27 @@ class viewPages {
             vs.viewCard();
         }
     }
-    viewTravels() {  //Pagina dels sols
+    viewTravels() {  //Pagina dels travels
         app.content.innerHTML = '';
         console.log(app.travelsList);
         for (let travel of Object.entries(app.travelsList)){
             let vt = new viewTravel(travel[1]);
             vt.viewCard();
+        }
+        let separador = document.createElement('div');
+        separador.classList.add("w-100");
+        app.content.append(separador);
+
+        let cardForm = document.createElement('div');
+        cardForm.classList.add('col');
+        cardForm.innerHTML = travelTemplates.travelForm();
+        app.content.append(cardForm);
+
+        $('#tf_player').val(app.player.name);
+        for(let p of app.player.planets){
+            //console.log(app.player);
+            let planet = app.planetsDict[p];
+            $('#tf_planet1').append(new Option(planet.display_name,planet.id))
         }
     }
 }

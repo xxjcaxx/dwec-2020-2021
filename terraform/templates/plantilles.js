@@ -139,17 +139,37 @@ sunModal: (sun)=> {
 
 let travelTemplates = {
   travelCard: (travel)=> { 
-    let {display_name,planet1,planet2,player} = travel;
+    let {display_name: name,
+      origin_planet: [,planet1],
+      destiny_planet: [,planet2],
+      player: [,playerName]} = travel;
     
     return `<div class="card">
 <div class="card-body">
-    <h5 class="card-title">${display_name}</h5>
+    <h5 class="card-title">${name}</h5>
 </div>
 <ul class="list-group list-group-flush">
-<li class="list-group-item">Coordinates: ${player}</li>
-<li class="list-group-item">Coordinates: ${planet1}</li>
-<li class="list-group-item">Coordinates: ${planet2}</li>
+<li class="list-group-item">Player: ${playerName}</li>
+<li class="list-group-item">Origin Planet: ${planet1}</li>
+<li class="list-group-item">Destiny Planet: ${planet2}</li>
 </ul>
 </div>
 `; },
+    travelForm: ()=>{
+      return `<form onsubmit="return false;" class="bg-dark text-light">
+      <div class="form-group ">
+        <label for="tf_player">Player</label>
+        <input readonly type="text" class="form-control" id="tf_player" aria-describedby="playerHelp">
+        <small id="playerHelp" class="form-text text-muted">You are the player</small>
+      </div>
+      <div class="form-group">
+        <label for="tf_planet1">Origin Planet</label>
+        <select class="form-control" id="tf_planet1"></select>
+        <label for="tf_planet2">Destiny Planet</label>
+        <select class="form-control" id="tf_planet2"></select>
+      </div>
+      <button  class="btn btn-primary" id="btn-login">Submit</button>
+      </form>`;
+
+    }
 }
