@@ -9,6 +9,9 @@ const paths = {
     },
     suns: {
         path: '/suns/', view: 'viewSuns'
+    },
+    travels: {
+        path: '/travels/', view: 'viewTravels'
     }
 }
 

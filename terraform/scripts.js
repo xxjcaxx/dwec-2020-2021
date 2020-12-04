@@ -8,8 +8,8 @@ import { Model } from './model.js';
 (() => {
   "use strict";
 
- // const url = 'http://10.100.23.100:8069/terraform/terraform';
-  const url = 'http://192.168.88.72:8069/terraform/terraform';
+  const url = 'http://10.100.23.100:8069/terraform/terraform';
+  //const url = 'http://192.168.88.72:8069/terraform/terraform';
   window.app = {};
   window.app.url = url;
 
@@ -125,6 +125,13 @@ import { Model } from './model.js';
     }
   }
 
+    class Travel extends Model {
+    constructor(id) {
+      super(`${url}/terraform.travel`, id)
+    }
+
+  }
+
   app.checkPlayer = function checkPlayer(callback) {
     let user = getCookie("username");
     if (user != "") {
@@ -191,8 +198,26 @@ import { Model } from './model.js';
         ()=>{
           console.log(app.sunList);
           app.checkPlayer(app.viewPages.viewSuns);
+        });
+  }
+
+  app.travels = function pageTravels(){
+  app.player.travels = {};
+  buscarObtener(`${app.url}/terraform.travel`, 'player', '=',  app.player.id,  // falla per integer
+      function exito(response) {
+        for (let travel of response.result) {
+          let travelAux  =  new Travel(travel.id);
+          travelAux.assign(travel)
+
+          app.player.travels[travel.id] = travelAux;
         }
-      );  
+      },
+      function fracaso(error) { console.log(error); })
+      .then(        // quan ja te els sols
+        ()=>{
+          console.log(app.player.travels);
+         // app.checkPlayer(app.viewPages.viewSuns);
+        });
   }
 
 
@@ -206,6 +231,7 @@ import { Model } from './model.js';
 
     document.querySelector('#nav-home').addEventListener('click', () => app.router.load('home'));
     document.querySelector('#nav-suns').addEventListener('click', () => app.router.load('suns'));
+    document.querySelector('#nav-travels').addEventListener('click', () => app.router.load('travels'));
     document.querySelector('#logout_button').addEventListener('click', app.logout);
 
 
