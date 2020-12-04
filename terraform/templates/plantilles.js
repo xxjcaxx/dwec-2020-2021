@@ -1,5 +1,5 @@
 export { planetCard, planetDetails, planetError
-, login, buildingCard, sunTemplates }
+, login, buildingCard, sunTemplates, travelTemplates }
 
 let planetCard = (planet) => `
 <img src="data:image/png;base64, ${planet.image}" class="card-img-top" alt="...">
@@ -135,4 +135,21 @@ sunModal: (sun)=> {
     </div>
   </div>`;
 }
+}
+
+let travelTemplates = {
+  travelCard: (travel)=> { 
+    let {display_name,planet1,planet2,player} = travel;
+    
+    return `<div class="card">
+<div class="card-body">
+    <h5 class="card-title">${display_name}</h5>
+</div>
+<ul class="list-group list-group-flush">
+<li class="list-group-item">Coordinates: ${player}</li>
+<li class="list-group-item">Coordinates: ${planet1}</li>
+<li class="list-group-item">Coordinates: ${planet2}</li>
+</ul>
+</div>
+`; },
 }

@@ -1,4 +1,4 @@
-import { planetCard, planetDetails, planetError, login, buildingCard, sunTemplates } from '../templates/plantilles.js';
+import { planetCard, planetDetails, planetError, login, buildingCard, sunTemplates, travelTemplates } from '../templates/plantilles.js';
 import { obtener, buscarObtener } from '../xhr.js';
 export { viewPlanet, viewPages }
 
@@ -187,6 +187,27 @@ class viewSun {
     }
 }
 
+
+class viewTravel {
+    constructor(travel){
+        this.travel = travel;
+    }
+    viewCard(){
+        let plantilla = travelTemplates.travelCard(this.travel); 
+        let element = document.createElement('div');
+        element.classList.add('card');
+        element.classList.add('m-1');
+        element.style = 'width: 12rem;';
+        element.innerHTML = plantilla;
+        app.content.appendChild(element);
+       /* element.addEventListener('click', () => { 
+            console.log(this.sun);
+           this.viewDetails(element);
+        });*/
+    
+    }
+}
+
 class viewPages {
     constructor(){
 
@@ -200,6 +221,14 @@ class viewPages {
         for (let sun of Object.entries(app.sunList)){
             let vs = new viewSun(sun[1]);
             vs.viewCard();
+        }
+    }
+    viewTravels() {  //Pagina dels sols
+        app.content.innerHTML = '';
+        console.log(app.travelsList);
+        for (let travel of Object.entries(app.travelsList)){
+            let vt = new viewTravel(travel[1]);
+            vt.viewCard();
         }
     }
 }

@@ -8,8 +8,8 @@ import { Model } from './model.js';
 (() => {
   "use strict";
 
-  const url = 'http://10.100.23.100:8069/terraform/terraform';
-  //const url = 'http://192.168.88.72:8069/terraform/terraform';
+  //const url = 'http://10.100.23.100:8069/terraform/terraform';
+  const url = 'http://192.168.88.72:8069/terraform/terraform';
   window.app = {};
   window.app.url = url;
 
@@ -202,21 +202,21 @@ import { Model } from './model.js';
   }
 
   app.travels = function pageTravels(){
-  app.player.travels = {};
-  buscarObtener(`${app.url}/terraform.travel`, 'player', '=',  app.player.id,  // falla per integer
+  app.travelsList = {};
+  buscarObtener(`${app.url}/terraform.travel`, 'player', '=', parseInt(app.player.id),  // falla per integer
       function exito(response) {
         for (let travel of response.result) {
           let travelAux  =  new Travel(travel.id);
           travelAux.assign(travel)
 
-          app.player.travels[travel.id] = travelAux;
+          app.travelsList[travel.id] = travelAux;
         }
       },
       function fracaso(error) { console.log(error); })
       .then(        // quan ja te els sols
         ()=>{
-          console.log(app.player.travels);
-         // app.checkPlayer(app.viewPages.viewSuns);
+          console.log(app.travelsList);
+          app.checkPlayer(app.viewPages.viewTravels);
         });
   }
 

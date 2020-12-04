@@ -20,8 +20,9 @@ function buscarObtener(url,field,criterio,valor,exito,fracaso){
   let fetchOptionsSearch = {
      method: fetchOptions.method,
      headers: fetchOptions.headers,
-     body: `{"jsonrpc":"2.0","method":"call","params":{"f1":"${field}","f2":"${criterio}","f3":"${valor}"}}`
+     body: `{"jsonrpc":"2.0","method":"call","params":{"f1":"${field}","f2":"${criterio}","f3":${valor}}}`
     };
+    console.log(fetchOptionsSearch.body);
   return fetch(url, fetchOptionsSearch)
     .then(json).then(exito)
     .catch(fracaso);
