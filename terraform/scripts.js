@@ -1,15 +1,16 @@
 import { setCookie, getCookie } from './cookies.js';
 import { json, obtener, buscarObtener, remoteLogin } from './xhr.js';
-import { planetCard, planetDetails, planetError, login as loginTemplate } from './templates/plantilles.js';
-import { viewPlanet, viewPages } from './views/views.js'
+import { login as loginTemplate } from './templates/templates.js';
+import { viewPages } from './views/views.js'
+import { viewPlanet } from './views/views_planet.js'
 import { Router } from './router.js';
 import { Model } from './model.js';
 
 (() => {
   "use strict";
 
-  const url = 'http://10.100.23.100:8069/terraform/terraform';
-  //const url = 'http://192.168.88.72:8069/terraform/terraform';
+  //const url = 'http://10.100.23.100:8069/terraform/terraform';
+  const url = 'http://192.168.88.72:8069/terraform/terraform';
   window.app = {};
   window.app.url = url;
   app.planetsDict = {};
@@ -29,14 +30,16 @@ import { Model } from './model.js';
     async paintPlanets() {
       document.querySelector('#nav-avatar').querySelector('img').src = "data:image/png;base64, " + this.avatar;
       for (let i of this.planets) {
+        
         let planeta = new Planet();
         planeta.id = i;
         await planeta.load().then(() => {
           app.planetsDict[planeta.id] = planeta;
+         // console.log(planeta);
           planeta.paintCard();
         }).catch(
           (error) => {   // fracaso
-            console.log('Fallo: ' + error);
+            console.log('Fallo Planeta: ' + error);
             planeta.paintError(i);
           }
         );
@@ -114,24 +117,26 @@ import { Model } from './model.js';
     constructor(id) {
       super(`${url}/terraform.sun`, id)
     }
-    loadPlanets(){
-      let {planets} = this;
-      let promesesPlanetes = planets.map((p)=>{
+    loadPlanets() {
+      let { planets } = this;
+      let promesesPlanetes = planets.map((p) => {
         let planeta = new Planet(p);
-        return planeta.load().then(()=>planeta);
-      }); 
-      return Promise.all(promesesPlanetes).then((response)=>
+        return planeta.load().then(() => planeta);
+      });
+      return Promise.all(promesesPlanetes).then((response) =>
         this.planetsDetails = response
       )
     }
   }
 
-    class Travel extends Model {
+  class Travel extends Model {
     constructor(id) {
       super(`${url}/terraform.travel`, id)
     }
-
   }
+  Travel.URL = `${url}/terraform.travel`;
+  
+  app.createTravel = (data)=> Travel.create(data);
 
   app.checkPlayer = function checkPlayer(callback) {
     let user = getCookie("username");
@@ -188,41 +193,51 @@ import { Model } from './model.js';
     buscarObtener(`${app.url}/terraform.sun`, 'id', '>', '0',
       function exito(response) {
         for (let sun of response.result) {
-          let sunAux  =  new Sun(sun.id);  
-          sunAux.assign(sun) 
-         
+          let sunAux = new Sun(sun.id);
+          sunAux.assign(sun)
+
           app.sunList[sun.id] = sunAux;
         }
       },
       function fracaso(error) { console.log(error); })
       .then(        // quan ja te els sols
-        ()=>{
+        () => {
           console.log(app.sunList);
           app.checkPlayer(app.viewPages.viewSuns);
         });
   }
 
-  app.travels = function pageTravels(){
-  app.travelsList = {};
-  buscarObtener(`${app.url}/terraform.travel`, 'player', '=', parseInt(app.player.id),  // falla per integer
+  app.travels = function pageTravels() {
+    app.travelsList = {};
+    buscarObtener(`${app.url}/terraform.travel`, 'player', '=', parseInt(app.player.id),  // falla per integer
       function exito(response) {
         for (let travel of response.result) {
-          let travelAux  =  new Travel(travel.id);
+          let travelAux = new Travel(travel.id);
           travelAux.assign(travel)
 
           app.travelsList[travel.id] = travelAux;
         }
       },
-      function fracaso(error) { console.log(error); })
-    /*  .then(()=>buscarObtener(`${app.url}/terraform.planet`, 'id', '>', '0', //
-
-
-      ))*/
-      .then(        // quan ja te els sols
-        ()=>{
-          console.log(app.travelsList);
+      function fracaso(error) { console.log(error); }
+      )
+      .then(() => 
+      buscarObtener(`${app.url}/name_id/terraform.planet`, 'id', '>', '0',
+      function exito(response) {
+        app.allPlanets = [];
+        for (let planet of response.result) {
+          let planetAux = new Planet(planet.id);
+          planetAux.assign(planet)
+          app.allPlanets.push(planetAux);
+        }
+        //console.log(app.allPlanets);
+      },
+      function fracaso(error) { console.log(error); }
+      ))
+      .then(() => {
+         // console.log(app.travelsList);
           app.checkPlayer(app.viewPages.viewTravels);
-        });
+        }
+        );
   }
 
 

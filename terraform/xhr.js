@@ -1,4 +1,4 @@
-export { json, obtener, buscarObtener, remoteLogin };
+export { json, obtener, buscarObtener, remoteLogin, enviar };
 
 
 function json(response) { return response.json()  }
@@ -22,7 +22,7 @@ function buscarObtener(url,field,criterio,valor,exito,fracaso){
      headers: fetchOptions.headers,
      body: `{"jsonrpc":"2.0","method":"call","params":{"f1":"${field}","f2":"${criterio}","f3":${valor}}}`
     };
-    console.log(fetchOptionsSearch.body);
+   // console.log(fetchOptionsSearch.body);
   return fetch(url, fetchOptionsSearch)
     .then(json).then(exito)
     .catch(fracaso);
@@ -38,7 +38,17 @@ function remoteLogin(url,user,pass) {
   .catch(()=>console.log('no login'));
 }
 
-
+function enviar(url,datos,exito,fracaso){
+  let fetchOptionsEnviar = { 
+    method: fetchOptions.method,
+    headers: fetchOptions.headers,
+    body: `{"jsonrpc":"2.0","method":"call","params":${datos}}`
+}
+//console.log(url,fetchOptionsEnviar.body);
+  return fetch(url, fetchOptionsEnviar)
+  .then(json).then(exito)
+  .catch(fracaso);
+}
 
 /* fetch(`${url}/terraform.planet/${i}`, fetchOptions)
           .then(json).then((response) => {

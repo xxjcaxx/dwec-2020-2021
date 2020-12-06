@@ -1,62 +1,6 @@
-export { planetCard, planetDetails, planetError
-, login, buildingCard, sunTemplates, travelTemplates }
+export { login, buildingCard, sunTemplates, travelTemplates }
 
-let planetCard = (planet) => `
-<img src="data:image/png;base64, ${planet.image}" class="card-img-top" alt="...">
-    <div class="card-body">
-        <h5 class="card-title">${planet.name}</h5>
-    </div>
-<ul class="list-group list-group-flush">
-    <li class="list-group-item">${planet.sun[1]}</li>
-  </ul>
-  <a href="#" class="btn btn-primary">Details</a>
-`;
 
-let planetDetails = (planet) => {
-  //console.log(planet.planetaryChanges);
-  return `<div class="col m-1">
-  <div class="card h-100"  >
-<img src="data:image/png;base64, ${planet.image}" class="card-img-top" alt="...">
-<h5 class="card-header">${planet.name}</h5>
-    <div class="card-body"> 
-    </div>
-    <ul class="list-group list-group-flush">
-    <li class="list-group-item">Sun: ${planet.sun[1]}</li>
-    <li class="list-group-item">Player: ${planet.player[1]}</li>
-    <li class="list-group-item">N Planet: ${planet.n_planet}</li>
-  </ul>
-</div>
-</div>
-<div class="col-8 m-1">
-<div class="card" >
-    <div class="card-body">
-           <canvas id="myChart" width="400" height="400"></canvas>      
-    </div>
-</div>
-</div>
-<div class="w-100"></div>
-<div class="col m-1 h-100">
-<div class="card" >
-<h5 class="card-header">Buildings</h5>  
-    <div class="card-body">
-    
-    <div class="container">
-    <div id="building_list" class="row row-cols-5 no-gutters">
-
-    </div>
-    </div> 
-    </div>
-</div>
-`;
-}
-
-let planetError = (planet) => `
-<img src="img/alderaan.gif" class="card-img-top" alt="...">
-    <div class="card-body">
-        <h5 class="card-title">Error ${planet}</h5>
-       
-    </div>
-`;
 
 let login = ()=> `<form onsubmit="return false;" class="bg-dark text-light">
 <div class="form-group ">
@@ -156,7 +100,7 @@ let travelTemplates = {
 </div>
 `; },
     travelForm: ()=>{
-      return `<form onsubmit="return false;" class="bg-dark text-light">
+      return `<form id="create-travel" onsubmit="return false;" class="bg-dark text-light">
       <div class="form-group ">
         <label for="tf_player">Player</label>
         <input readonly type="text" class="form-control" id="tf_player" aria-describedby="playerHelp">
@@ -168,7 +112,7 @@ let travelTemplates = {
         <label for="tf_planet2">Destiny Planet</label>
         <select class="form-control" id="tf_planet2"></select>
       </div>
-      <button  class="btn btn-primary" id="btn-login">Submit</button>
+      <button  class="btn btn-primary" id="btn-create-travel">Create Travel</button>
       </form>`;
 
     }

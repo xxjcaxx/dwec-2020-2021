@@ -1,215 +1,146 @@
-import { planetCard, planetDetails, planetError, login, buildingCard, sunTemplates, travelTemplates } from '../templates/plantilles.js';
+import { login, buildingCard, sunTemplates, travelTemplates } from '../templates/templates.js';
+import { planetTemplates } from '../templates/planet_templates.js';
 import { obtener, buscarObtener } from '../xhr.js';
-export { viewPlanet, viewPages }
-
-class viewPlanet {
-    constructor(planet) {
-        this.planet = planet;
-    }
-    viewCard() {
-        let plantilla = planetCard(this.planet); // funció importada
-        let element = document.createElement('div');
-        element.classList.add('card');
-        element.classList.add('m-1');
-        element.style = 'width: 12rem;';
-        element.innerHTML = plantilla;
-        app.content.appendChild(element);
-       // element.querySelector('a').addEventListener('click', () => { app.content.innerHTML = ''; this.planet.details(); });
-        element.querySelector('a').addEventListener('click', () => { 
-            app.router.load('/planet/'+this.planet.id) });
-    }
-    viewError() {
-        let plantilla = planetError(this.planet); // funció importada
-        let element = document.createElement('div');
-        element.classList.add('card');
-        element.classList.add('m-1');
-        element.style = 'width: 12rem;';
-        element.innerHTML = plantilla;
-        app.content.appendChild(element);
-    }
-    viewDetails() {
-        app.content.innerHTML = ''; 
-        let plantilla = planetDetails(this.planet);
-        //console.log(this.planet);
-        let details = document.createElement('div');
-        //details.classList.add('col');
-        //details.innerHTML = plantilla;
-        app.content.append(details);
-        details.outerHTML = plantilla;
+//import { viewPlanet } from './views/views_planet.js'
+export { viewPages }
 
 
-        ///////// El gràfic
-
-        let data = {
-            labels:[],
-            datasets:[], 
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        };
-        data.labels = this.planet.planetaryChanges.map((p)=>p.time);
-
-        // emission
-       // console.log(this.planet.planetaryChanges);
-        let emission = this.planet.planetaryChanges.map((p)=>p.emission)
-        data.datasets.push({label:'Emission',data:emission, pointRadius: 0, borderColor: 'rgba(255,99,132,1)', fill:false,borderWidth:2})
-
-        //greenhouse
-        let greenhouse = this.planet.planetaryChanges.map((p)=>p.greenhouse)
-        data.datasets.push({label:'Greenhouse',data:greenhouse, pointRadius: 0, borderColor: 'rgba(255,255,99,1)', fill:false,borderWidth:2})
-
-         //temperature
-         let temp = this.planet.planetaryChanges.map((p)=>p.average_temperature)
-         data.datasets.push({label:'Temperature',data:temp, pointRadius: 0, borderColor: 'rgba(99,255,99,1)', fill:false,borderWidth:2})
-
-          //co2
-        let co2 = this.planet.planetaryChanges.map((p)=>p.co2)
-        data.datasets.push({label:'Co2',data:co2,pointRadius: 0, borderColor: 'rgba(99,99,99,1)', fill:false,borderWidth:2})
-
-         //oxigen
-         let oxigen = this.planet.planetaryChanges.map((p)=>p.oxigen)
-         data.datasets.push({label:'Oxigen',data:greenhouse,pointRadius: 0, borderColor: 'rgba(99,99,255,1)', fill:false,borderWidth:2})
-
-          //plants
-        let plants = this.planet.planetaryChanges.map((p)=>p.plants)
-        data.datasets.push({label:'Plants',data:plants,pointRadius: 0, borderColor: 'rgba(150,255,160,1)', fill:false,borderWidth:2})
-
-                  //animals
-        let animals = this.planet.planetaryChanges.map((p)=>p.animals)
-        data.datasets.push({label:'Animals',data:animals,pointRadius: 0, borderColor: 'rgba(150,150,0,1)', fill:false,borderWidth:2})
-          
-          
-
-        var ctx = document.getElementById('myChart');
-        var myChart = new Chart(ctx, {
-            type: 'line',
-            data: data,
-        });
-      /*  var myChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
-                   // backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderColor: 'rgba(255, 99, 132, 1)',    
-                    fill: false,
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });*/
-       ////////////////// Els edificis
-
-      // console.log(this.planet.buildingsDetails);
-        for(let b of this.planet.buildingsDetails){
-            if(b != undefined){
-            let plantilla = buildingCard(b);
-            let element = document.createElement('div');
-            //element.classList.add('card');
-            element.classList.add('p-1');
-            element.classList.add('col');
-            
-            element.innerHTML = plantilla;
-            document.querySelector('#building_list').append(element);
-        }
-      }
-
-    }
-}
 
 class viewSun {
-    constructor(sun){
+    constructor(sun) {
         this.sun = sun;
     }
-    viewCard(){
-        let plantilla = sunTemplates.sunCard(this.sun); 
+    viewCard() {
+        let plantilla = sunTemplates.sunCard(this.sun);
         let element = document.createElement('div');
         element.classList.add('card');
         element.classList.add('m-1');
         element.style = 'width: 12rem;';
         element.innerHTML = plantilla;
         app.content.appendChild(element);
-        element.addEventListener('click', () => { 
+        element.addEventListener('click', () => {
             console.log(this.sun);
-           this.viewDetails(element);
+            this.viewDetails(element);
         });
-    
+
     }
-    viewDetails(element){
- 
+    viewDetails(element) {
+
         $("#sunSystemModal").modal('show');
         $('#sunSystemModalLabel').html(`${this.sun.display_name}`);
         this.sun.loadPlanets()
-            .then(()=>{
+            .then(() => {
+                let centro = 350;
+                let centroY = 335
+
+                function rotate(cx, cy, x, y, angle) {
+                    console.log(cx,cy,x,y,angle);
+                    var radians = (Math.PI / 180) * angle,
+                        cos = Math.cos(radians),
+                        sin = Math.sin(radians),
+                        nx = (cos * (x - cx)) + (sin * (y - cy)) + cx,
+                        ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
+                    return [nx, ny];
+                }
+
+                function getKeyframes(element) {
+                    let keyframes = [];
+                    for (let i = 0; i < 360; i++) {
+                        let radio = parseFloat(element.diametro/2);
+                        let x = parseFloat(element.getAttribute('x')), y=parseFloat(element.getAttribute('y'));
+                        let translate = rotate(centro,centroY,x+radio,y+radio,i); 
+                        //console.log(translate);
+                        keyframes.push({ transform: `translate(${translate[0]-x-radio}px, ${translate[1]-y-radio}px)` });
+                      //keyframes.push({ transform: `translate(${translate[0]-x}px, ${translate[1]-y}px)` });
+                    }
+                    console.log(keyframes);
+                    return keyframes;
+                }
+
+
+                function showPlanet(event, p) {
+                    let divPlanet = document.createElement('div');
+                    divPlanet.style.position = 'absolute';
+                    divPlanet.style.top = (event.clientY + 20) + "px";
+                    divPlanet.style.left = (event.clientX + 20) + "px";
+                    divPlanet.style.width = "100px";
+
+                    divPlanet.classList.add('card');
+                    divPlanet.innerHTML = planetTemplates.planetMini(p);
+                    $("#sunSystemModal").append(divPlanet);
+                    //console.log(p);
+                    event.target.addEventListener('mouseout', () => divPlanet.remove());
+                }
+
                 $("#svgSolarSystem").find("circle").remove();
                 $("#svgSolarSystem").find(".svgPlaneta").remove();
-                this.sun.planetsDetails.map(p=>{
-                    let centro = 350;
-                    let diametro = p.gravity*2;
-                    let posicion = p.n_planet*30+centro+(25-diametro/2)
-                    let imagePlanet = document.createElementNS('http://www.w3.org/2000/svg','image');
-                    imagePlanet.setAttributeNS('http://www.w3.org/1999/xlink','xlink:href',`data:image/png;base64,${p.image_small}`);
-                    imagePlanet.setAttribute('x',posicion+'');
-                    imagePlanet.setAttribute('y','335');
-                    imagePlanet.setAttribute('class','svgPlaneta');
-                    imagePlanet.setAttribute('height',diametro+'');
-                    imagePlanet.setAttribute('width',diametro+'');
-                    let orbit = document.createElementNS('http://www.w3.org/2000/svg','circle');
-                    orbit.setAttribute('cx',centro+"");
-                    orbit.setAttribute('cy',centro+"");
-                    orbit.setAttribute('r',(p.n_planet*30+25)+'');
-                    orbit.setAttribute('stroke','grey');
-                    orbit.setAttribute('stroke-width','2');
-                    orbit.setAttribute('fill-opacity','0');
-                    $("#svgSolarSystem").append(orbit);
-                    $("#svgSolarSystem").append(imagePlanet);
-                    });
-               
-             
+                let elements = this.sun.planetsDetails.map(p => {
+                    let diametro = p.gravity * 2;
+                    let posicion = p.n_planet * 30 + centro + (25 - diametro / 2);
+                    let posicionY = centroY - diametro/2;
+
+                    let imagePlanet = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+                    imagePlanet.distancia = posicion;
+                    imagePlanet.diametro = diametro;
+                    imagePlanet.angulo = 0;
+                    imagePlanet.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', `data:image/png;base64,${p.image_small}`);
+                    imagePlanet.setAttribute('x', posicion + '');
+                    imagePlanet.setAttribute('y', posicionY);
+                    imagePlanet.setAttribute('class', 'svgPlaneta');
+                    imagePlanet.setAttribute('height', diametro + '');
+                    imagePlanet.setAttribute('width', diametro + '');
+                    imagePlanet.addEventListener('mouseover', (e) => showPlanet(e, p));
+
+                    let orbit = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    orbit.setAttribute('cx', centro + "");
+                    orbit.setAttribute('cy', centroY + "");
+                    orbit.setAttribute('r', (p.n_planet * 30 + 25) + '');
+                    orbit.setAttribute('stroke', 'grey');
+                    orbit.setAttribute('stroke-width', '2');
+                    orbit.setAttribute('fill-opacity', '0');
+                    return { imagePlanet, orbit };
+                });
+
+                for (let e of elements) {
+                    $("#svgSolarSystem").append(e.orbit);
+                }
+                for (let e of elements) {
+                    $("#svgSolarSystem").append(e.imagePlanet);
+                    e.imagePlanet.animate(getKeyframes(e.imagePlanet),{duration:10*(e.imagePlanet.distancia**1.1),iterations:Infinity});
+                  // e.imagePlanet.animate({transform: 'translate(100px, 1000px)'},{duration:10000,iterations:Infinity});
+                }
+                //  $("#svgSolarSystem").append(orbit);
+                // $("#svgSolarSystem").append(imagePlanet);
+
+
             });
-            
+
     }
 }
 
 
 class viewTravel {
-    constructor(travel){
+    constructor(travel) {
         this.travel = travel;
     }
-    viewCard(){
-        let plantilla = travelTemplates.travelCard(this.travel); 
+    viewCard() {
+        let plantilla = travelTemplates.travelCard(this.travel);
         let element = document.createElement('div');
         element.classList.add('card');
         element.classList.add('m-1');
         element.style = 'width: 12rem;';
         element.innerHTML = plantilla;
         app.content.appendChild(element);
-       /* element.addEventListener('click', () => { 
-            console.log(this.sun);
-           this.viewDetails(element);
-        });*/
-    
+        /* element.addEventListener('click', () => { 
+             console.log(this.sun);
+            this.viewDetails(element);
+         });*/
+
     }
 }
 
 class viewPages {
-    constructor(){
+    constructor() {
 
     }
     viewHome() {
@@ -218,15 +149,15 @@ class viewPages {
     }
     viewSuns() {  //Pagina dels sols
         app.content.innerHTML = sunTemplates.sunModal();
-        for (let sun of Object.entries(app.sunList)){
+        for (let sun of Object.entries(app.sunList)) {
             let vs = new viewSun(sun[1]);
             vs.viewCard();
         }
     }
     viewTravels() {  //Pagina dels travels
         app.content.innerHTML = '';
-        console.log(app.travelsList);
-        for (let travel of Object.entries(app.travelsList)){
+        //console.log(app.travelsList);
+        for (let travel of Object.entries(app.travelsList)) {
             let vt = new viewTravel(travel[1]);
             vt.viewCard();
         }
@@ -240,10 +171,19 @@ class viewPages {
         app.content.append(cardForm);
 
         $('#tf_player').val(app.player.name);
-        for(let p of app.player.planets){
+        for (let p of app.player.planets) {
             //console.log(app.player);
             let planet = app.planetsDict[p];
-            $('#tf_planet1').append(new Option(planet.display_name,planet.id))
+            $('#tf_planet1').append(new Option(planet.display_name, planet.id))
         }
+        for (let p of app.allPlanets) {
+            $('#tf_planet2').append(new Option(p.name, p.id));
+        }
+
+        $('#btn-create-travel').on('click', () => {
+            let data = `{"player":"${app.player.id}","origin_planet":"${$('#tf_planet1').val()}","destiny_planet":"${$('#tf_planet2').val()}"}`
+            // console.log(data);
+            app.createTravel(data).then(app.travels);
+        })
     }
 }
