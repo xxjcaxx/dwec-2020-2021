@@ -16,28 +16,28 @@ class Partido{
 ( () => {
     "use strict";
 
-    function mostrarPartidos(){
-        fetch('liga.json',{})  // descarregar la llista de partits
+    async function mostrarPartidos(){
+        await fetch('liga.json',{})  // descarregar la llista de partits
         .then((liga)=>{
             return liga.json();
         }).then((partidos)=>{
             return partidos.matches.map((p)=>{ // fer un array d'objectes partit
                 return new Partido(p);
             });
-        }).then((partidos)=>{
+        }).then(async (partidos)=>{
             let tabla = document.createElement('table'); // Crear una taula amb totes les dades
             let divPartidos = document.querySelector('#partidos');
             divPartidos.prepend(tabla);
             for (let p of partidos){
-               p.dibujar(tabla); // cridar a la funció dibujar de cada partit
+                
+                await new Promise((resolve)=>setTimeout(()=>{resolve();},1000))
+                .then(()=>{
+                    p.dibujar(tabla);
+                });
+                console.log(p);
+                // cridar a la funció dibujar de cada partit
             }
         });
-        
-
-       
-        
-        
-        
     }
 
     document.addEventListener("DOMContentLoaded", function () {
