@@ -26,13 +26,9 @@ class Partido{
                 return new Partido(p);
             });
         }).then((partidos)=>{
-            console.log(partidos);
-            let tabla = document.createElement('table'); // Crear una taula amb totes les dades
-            let divPartidos = document.querySelector('#partidos');
-            divPartidos.prepend(tabla);
-            for (let p of partidos){
-               p.dibujar(tabla); // cridar a la funció dibujar de cada partit
-            }
+            // TODO Fer un div per a cada jornada i dibuixar els partits en ella
+            // TODO Mostrar sols la jornada1 i un botó per avançar jornada o tornar a l'anterior
+            // TODO EXTRA Fer que cada vegada que pulses el botó de la jornada es descarregue el json de nou
         });        
     }
 

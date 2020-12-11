@@ -16,8 +16,8 @@ class Partido{
 ( () => {
     "use strict";
 
-    async function mostrarPartidos(){
-        await fetch('liga.json',{})  // descarregar la llista de partits
+    function mostrarPartidos(){
+         fetch('liga.json',{})  // descarregar la llista de partits
         .then((liga)=>{
             return liga.json();
         }).then((partidos)=>{
@@ -29,12 +29,12 @@ class Partido{
             let divPartidos = document.querySelector('#partidos');
             divPartidos.prepend(tabla);
             for (let p of partidos){
-                
-                await new Promise((resolve)=>setTimeout(()=>{resolve();},1000))
+                await new Promise((resolve)=>setTimeout(
+                    ()=>{resolve();},1000))
                 .then(()=>{
                     p.dibujar(tabla);
                 });
-                console.log(p);
+                //console.log(p);
                 // cridar a la funció dibujar de cada partit
             }
         });
