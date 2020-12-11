@@ -1,3 +1,6 @@
+// Dades tretes del repositori https://github.com/andrewbaisden/dragonball-character-database/blob/master/client/db.json
+
+
 (() => {
     "use strict";
     // TODO mostrar una galeria de personatjes de Dragon ball amb les dades de db.json i les imatges d'assets
