@@ -1,3 +1,4 @@
+import { HostListener } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -10,6 +11,15 @@ export class HomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  imgY: number = 100 
+
+  @HostListener("window:scroll", ['$event'])
+  homeScroll($event:Event){
+    let scrollOffset = window.scrollY;
+    this.imgY = 100 - scrollOffset/2;
+    if (this.imgY < 0) { this.imgY = 20}    
   }
 
 }
