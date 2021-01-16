@@ -18,9 +18,17 @@ export class ProductsService {
       map(response => response.products) // de la resposta traguem l'array que ens interessa
       );
   }
-  getProduct(id: number){
+  getProduct(id: number): Observable<Product>{
     return this.http.get<{products: Product[]}>(this.productURL).pipe(
-      map(response => response.products.filter(p => p.id == id)[0]), // de la resposta sols traguem el producte amb el mateix id
+      map(response => response.products.filter(p => p.id === id)[0]), // de la resposta sols traguem el producte amb el mateix id
+      );
+  }
+
+  searchProducts(criteri: string): Observable<Product[]>{
+    criteri = criteri.toLowerCase();
+    console.log({criteri});
+    return this.http.get<{products: Product[]}>(this.productURL).pipe(
+      map(response => response.products.filter(p => p.name.toLocaleLowerCase().includes(criteri))),
       );
   }
 }

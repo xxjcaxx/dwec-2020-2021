@@ -1,9 +1,10 @@
 <h1>Catalogue</h1>
+<input type="text" name="searchProduct" id="searchProduct" [(ngModel)]="searchProduct">
 <div class="row row-cols-1 row-cols-md-2 g-4">
   <div class="col">
     <app-product-item
     [p]="product"
-    *ngFor="let product of products">
+    *ngFor="let product of products | productFilter:searchProduct">
     </app-product-item>
   </div>
 </div>

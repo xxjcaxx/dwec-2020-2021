@@ -15,6 +15,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { ProductsService } from './services/products.service';
 import { ProductDetailComponent } from './product/product-detail/product-detail.component';
 import { ProductItemComponent } from './product/product-item/product-item.component';
+import { ProductFilterPipe } from './pipes/product-filter.pipe';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -24,12 +26,14 @@ import { ProductItemComponent } from './product/product-item/product-item.compon
     HomeComponent,
     CatalogeComponent,
     ProductDetailComponent,
-    ProductItemComponent
+    ProductItemComponent,
+    ProductFilterPipe
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
   ],
   providers: [ProductsService],
   bootstrap: [AppComponent]
