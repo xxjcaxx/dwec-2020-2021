@@ -3,4 +3,5 @@ export interface IPlanet {
     id: number;
     sun?: number;
     image?: string;
+    imm?: string;
 }

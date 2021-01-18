@@ -11,6 +11,7 @@ import { PlanetListComponent } from './planet/planet-list/planet-list.component'
 import { PlanetItemComponent } from './planet/planet-item/planet-item.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { PlanetService } from './planet/planet.service';
+import { LoginComponent } from "./components/login/login.component";
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { PlanetService } from './planet/planet.service';
     HomeComponent,
     PlanetListComponent,
     PlanetItemComponent,
-    FooterComponent
+    FooterComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
