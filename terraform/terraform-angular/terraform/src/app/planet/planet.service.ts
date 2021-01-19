@@ -11,7 +11,7 @@ import { environment } from '../../environments/environment';
 export class PlanetService {
 
   planetsURL = environment.url+'terraform.planet';  // La URL la guarde en enviroment
-  postBody = `{"jsonrpc":"2.0","method":"call","params":{"f1":"id","f2":"<=","f3":8308}}`;
+  postBody = `{"jsonrpc":"2.0","method":"call","params":{"f1":"id","f2":"<=","f3":8318}}`;
   postOptions = { headers: new HttpHeaders({ "Content-type": "application/json; charset=UTF-8" })};
 
   constructor( private http: HttpClient) { }

@@ -12,6 +12,7 @@ import { PlanetItemComponent } from './planet/planet-item/planet-item.component'
 import { FooterComponent } from './components/footer/footer.component';
 import { PlanetService } from './planet/planet.service';
 import { LoginComponent } from "./components/login/login.component";
+import { PlanetDetailComponent } from './planet/planet-detail/planet-detail.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { LoginComponent } from "./components/login/login.component";
     PlanetListComponent,
     PlanetItemComponent,
     FooterComponent,
-    LoginComponent
+    LoginComponent,
+    PlanetDetailComponent
   ],
   imports: [
     BrowserModule,
