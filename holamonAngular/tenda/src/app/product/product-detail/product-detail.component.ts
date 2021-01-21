@@ -10,7 +10,7 @@ import { Product } from '../product';
 export class ProductDetailComponent implements OnInit {
 product: Product;
   constructor( private activatedRoute: ActivatedRoute,
-               private productsService: ProductsService ) { }
+               private productsService: ProductsService ) {}
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe( params => {
