@@ -3,6 +3,14 @@
   <div class="card-body">
     <h5 class="card-title">{{p.name}}</h5>
     <p class="card-text">{{p.price}}</p>
+    <p class="card-text" (mouseleave)="auxRatting=p.ratting">
+     <span class="star" *ngFor="let i of [1,2,3,4,5]"
+     (click)="puntuar(i)"
+     (mouseenter)="auxRatting = i"
+     >
+       {{ i <= auxRatting ? '★' : '☆' }}
+     </span>
+    </p>
     <p class="card-text">{{p.description | slice:0:50}}</p>
     <button class="btn btn-outline-primary" (click)="detailsProduct(p.id)">Detalls</button>
    <!--<a [routerLink]="['/product',p.id]" class="btn btn-outline-primary">Detalls</a> -->

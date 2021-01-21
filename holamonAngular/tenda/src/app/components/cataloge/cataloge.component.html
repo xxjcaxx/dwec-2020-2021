@@ -4,7 +4,8 @@
   <div class="col">
     <app-product-item
     [p]="product"
-    *ngFor="let product of products | productFilter:searchProduct">
+    *ngFor="let product of products | productFilter:searchProduct"
+    (rattingChanged)="changeRatting($event, product)">
     </app-product-item>
   </div>
 </div>

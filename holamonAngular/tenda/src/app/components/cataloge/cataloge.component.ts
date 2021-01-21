@@ -46,5 +46,9 @@ export class CatalogeComponent implements OnInit {
        );*/
   }
 
+  changeRatting(stars: number, p: Product): void {
+  p.ratting = stars;
+  }
+
 
 }
