@@ -13,6 +13,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { PlanetService } from './planet/planet.service';
 import { LoginComponent } from "./components/login/login.component";
 import { PlanetDetailComponent } from './planet/planet-detail/planet-detail.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { PlanetDetailComponent } from './planet/planet-detail/planet-detail.comp
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule, 
+    NgxChartsModule,
   ],
   providers: [PlanetService],
   bootstrap: [AppComponent]
