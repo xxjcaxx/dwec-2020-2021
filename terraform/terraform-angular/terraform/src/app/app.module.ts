@@ -14,6 +14,9 @@ import { PlanetService } from './planet/planet.service';
 import { LoginComponent } from "./components/login/login.component";
 import { PlanetDetailComponent } from './planet/planet-detail/planet-detail.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { TemperaturePipe } from './pipes/temperature.pipe';
+import { FilterPlanetPipe } from './planet/pipes/filter-planet.pipe';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,9 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     PlanetItemComponent,
     FooterComponent,
     LoginComponent,
-    PlanetDetailComponent
+    PlanetDetailComponent,
+    TemperaturePipe,
+    FilterPlanetPipe
   ],
   imports: [
     BrowserModule,
@@ -32,6 +37,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     BrowserAnimationsModule,
     HttpClientModule, 
     NgxChartsModule,
+    FormsModule,
   ],
   providers: [PlanetService],
   bootstrap: [AppComponent]

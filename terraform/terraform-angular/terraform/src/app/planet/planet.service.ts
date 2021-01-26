@@ -14,7 +14,7 @@ export class PlanetService {
   postBody = `{"jsonrpc":"2.0","method":"call","params":{"f1":"player","f2":"=","f3":26}}`;
   postOptions = { headers: new HttpHeaders({ "Content-type": "application/json; charset=UTF-8" })};
 
-  constructor( private http: HttpClient) { }
+  constructor( private http: HttpClient) {   }
 
     getPlanets(): Observable<IPlanet[]> {
       let obs: Observable<IPlanet[]> = // obs és de tipus Observable que retorna un array de planetes
@@ -35,4 +35,13 @@ export class PlanetService {
     (`${this.planetsURL}/${id}`,this.postBody,this.postOptions)
     .pipe(map(response => response.result[0] ));
   }
+
+  planetaryChangessURL = environment.url+'terraform.planetary_changes';  // La URL la guarde en enviroment
+  getPlanetChanges(id: number): Observable<IPlanet>{
+    let postBody = `{"jsonrpc":"2.0","method":"call","params":{"f1":"planet","f2":"=","f3":${id}}}`;
+    return this.http.post<{result: IPlanet[]}>
+    (`${this.planetsURL}/${id}`,this.postBody,this.postOptions)
+    .pipe(map(response => response.result[0] ));
+  }
+
 }

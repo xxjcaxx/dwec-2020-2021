@@ -27,4 +27,6 @@ export class PlanetListComponent implements OnInit {
   this.planets = [{name: 'Error', image: undefined, id: 0}];
   }
 
+  criteri: string = "";
+
 }

@@ -102,9 +102,10 @@ export class PlanetDetailComponent implements OnInit {
       }
     ]
   }];
+  
 
 
-  view: any[] = [700, 300];
+  view: any[] = [700, 700];
 
   // options
   legend: boolean = true;
