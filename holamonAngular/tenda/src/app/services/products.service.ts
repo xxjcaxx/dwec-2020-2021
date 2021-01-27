@@ -20,7 +20,10 @@ export class ProductsService {
   }
   getProduct(id: number): Observable<Product>{
     return this.http.get<{products: Product[]}>(this.productURL).pipe(
-      map(response => response.products.filter(p => p.id === id)[0]), // de la resposta sols traguem el producte amb el mateix id
+      map(response => {
+        let resp = response.products.filter(p => p.id == id)[0]
+        return resp;
+      } ), // de la resposta sols traguem el producte amb el mateix id
       );
   }
 

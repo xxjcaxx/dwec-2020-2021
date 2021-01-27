@@ -17,6 +17,8 @@ import { ProductDetailComponent } from './product/product-detail/product-detail.
 import { ProductItemComponent } from './product/product-item/product-item.component';
 import { ProductFilterPipe } from './pipes/product-filter.pipe';
 import { FormsModule } from '@angular/forms';
+import { ProductEditComponent } from './product/product-edit/product-edit.component';
+import { LoginComponent } from './components/login/login.component';
 
 
 @NgModule({
@@ -27,7 +29,9 @@ import { FormsModule } from '@angular/forms';
     CatalogeComponent,
     ProductDetailComponent,
     ProductItemComponent,
-    ProductFilterPipe
+    ProductFilterPipe,
+    ProductEditComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
