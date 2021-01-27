@@ -17,6 +17,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { TemperaturePipe } from './pipes/temperature.pipe';
 import { FilterPlanetPipe } from './planet/pipes/filter-planet.pipe';
 import { FormsModule } from '@angular/forms';
+import { SunComponent } from './sun/sun/sun.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { FormsModule } from '@angular/forms';
     LoginComponent,
     PlanetDetailComponent,
     TemperaturePipe,
-    FilterPlanetPipe
+    FilterPlanetPipe,
+    SunComponent
   ],
   imports: [
     BrowserModule,

@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IPlanet } from '../i-planet';
 import { PlanetService } from '../planet.service';
+import { PlanetaryChanges } from '../planetary-changes';
 
 @Component({
   selector: 'app-planet-detail',
   templateUrl: './planet-detail.component.html',
- 
+
 })
 export class PlanetDetailComponent implements OnInit {
 
@@ -14,6 +15,9 @@ export class PlanetDetailComponent implements OnInit {
     private planetService: PlanetService) { }
 
   planet!: IPlanet;
+  pChanges!: PlanetaryChanges[];
+  graphData = {};
+
   image = '';
 
   ngOnInit(): void {
@@ -28,6 +32,17 @@ export class PlanetDetailComponent implements OnInit {
           else {
               this.image = '/assets/img/default-placeholder.png'
           }
+          this.planetService.getPlanetChanges(p.id).subscribe(
+            plntchg => {
+              this.pChanges = plntchg;
+              //console.log(this.pChanges);
+              this.pChanges.map(pc => {
+                for(let key in pc){
+                //  this.graphData[key]
+                }
+              })
+             }
+          );
         },
         error => this.planet.name = 'Error '+error,
         () => console.log('complete')
@@ -37,72 +52,23 @@ export class PlanetDetailComponent implements OnInit {
 
 /////////////////Per el grafic
   multi: any[] = [{
-    "name": "Germany",
-    "series": [
-      {
-        "name": "1990",
-        "value": 62000000
-      },
-      {
-        "name": "2010",
-        "value": 73000000
-      },
-      {
-        "name": "2011",
-        "value": 89400000
-      }
-    ]
+    "name": "energy",
+    "series": []
+  },
+  {
+    "name": "greenhouse",
+    "series": []
   },
 
   {
-    "name": "USA",
-    "series": [
-      {
-        "name": "1990",
-        "value": 250000000
-      },
-      {
-        "name": "2010",
-        "value": 309000000
-      },
-      {
-        "name": "2011",
-        "value": 311000000
-      }
-    ]
-  },
-
-  {
-    "name": "France",
-    "series": [
-      {
-        "name": "1990",
-        "value": 58000000
-      },
-      {
-        "name": "2010",
-        "value": 50000020
-      },
-      {
-        "name": "2011",
-        "value": 58000000
-      }
-    ]
+    "name": "emission",
+    "series": []
   },
   {
-    "name": "UK",
-    "series": [
-      {
-        "name": "1990",
-        "value": 57000000
-      },
-      {
-        "name": "2010",
-        "value": 62000000
-      }
-    ]
+    "name": "average_temperature",
+    "series": []
   }];
-  
+
 
 
   view: any[] = [700, 700];

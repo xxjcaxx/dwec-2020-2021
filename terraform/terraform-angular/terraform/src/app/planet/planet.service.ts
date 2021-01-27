@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {map,filter} from 'rxjs/operators'
 import { IPlanet } from './i-planet';
 import { environment } from '../../environments/environment';
+import { PlanetaryChanges } from './planetary-changes';
 
 @Injectable({
   providedIn: 'root'
@@ -37,11 +38,11 @@ export class PlanetService {
   }
 
   planetaryChangessURL = environment.url+'terraform.planetary_changes';  // La URL la guarde en enviroment
-  getPlanetChanges(id: number): Observable<IPlanet>{
+  getPlanetChanges(id: number): Observable<PlanetaryChanges[]>{
     let postBody = `{"jsonrpc":"2.0","method":"call","params":{"f1":"planet","f2":"=","f3":${id}}}`;
-    return this.http.post<{result: IPlanet[]}>
-    (`${this.planetsURL}/${id}`,this.postBody,this.postOptions)
-    .pipe(map(response => response.result[0] ));
+    return this.http.post<{result: PlanetaryChanges[]}>
+    (this.planetaryChangessURL,postBody,this.postOptions)
+    .pipe(map(response => response.result ));
   }
 
 }
