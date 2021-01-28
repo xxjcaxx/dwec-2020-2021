@@ -13,6 +13,11 @@ import { FooterComponent } from './components/footer/footer.component';
 import { PlanetService } from './planet/planet.service';
 import { LoginComponent } from "./components/login/login.component";
 import { PlanetDetailComponent } from './planet/planet-detail/planet-detail.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { TemperaturePipe } from './pipes/temperature.pipe';
+import { FilterPlanetPipe } from './planet/pipes/filter-planet.pipe';
+import { FormsModule } from '@angular/forms';
+import { SunComponent } from './sun/sun/sun.component';
 
 @NgModule({
   declarations: [
@@ -23,13 +28,18 @@ import { PlanetDetailComponent } from './planet/planet-detail/planet-detail.comp
     PlanetItemComponent,
     FooterComponent,
     LoginComponent,
-    PlanetDetailComponent
+    PlanetDetailComponent,
+    TemperaturePipe,
+    FilterPlanetPipe,
+    SunComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule, 
+    NgxChartsModule,
+    FormsModule,
   ],
   providers: [PlanetService],
   bootstrap: [AppComponent]

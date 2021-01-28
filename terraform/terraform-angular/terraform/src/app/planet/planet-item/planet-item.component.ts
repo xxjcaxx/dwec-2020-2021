@@ -19,6 +19,7 @@ export class PlanetItemComponent implements OnInit {
     else {
         this.image = '/assets/img/default-placeholder.png'
     }
+    if (! this.planet.average_temperature) this.planet.average_temperature = 0;
   }
 
 }

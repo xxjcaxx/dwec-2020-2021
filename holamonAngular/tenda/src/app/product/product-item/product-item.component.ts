@@ -21,6 +21,6 @@ export class ProductItemComponent implements OnInit {
     this.router.navigate(['/product', id]);
   }
   puntuar(i: number): void {
-    this.rattingChanged.emit(this.auxRatting);
+    this.rattingChanged.emit(i);
   }
 }

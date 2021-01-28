@@ -3,5 +3,16 @@ export interface IPlanet {
     id: number;
     sun?: number;
     image?: string;
-    imm?: string;
+    average_temperature?: number;
+    oxigen?: number;
+    co2?: number;
+    water?: number;
+    gravity?: number;
+    air_density?: number;
+    energy?: number;
+    plants?: number;
+    animals?: number;
+    planetary_changes?: number[];
+    buildings?: any[];
+    player?: number;
 }
