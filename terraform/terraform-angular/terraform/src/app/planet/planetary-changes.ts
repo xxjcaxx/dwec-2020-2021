@@ -1,4 +1,5 @@
 export interface PlanetaryChanges {
+  'time': string;
   'energy': number;
   'greenhouse': number;
   'emission': number;

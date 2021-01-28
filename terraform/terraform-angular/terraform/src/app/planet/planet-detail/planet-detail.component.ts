@@ -4,6 +4,16 @@ import { IPlanet } from '../i-planet';
 import { PlanetService } from '../planet.service';
 import { PlanetaryChanges } from '../planetary-changes';
 
+interface Series{
+  name: string;
+  value: number;
+}
+interface GData {
+  name: string;
+  series: Array<Series>;
+}
+
+
 @Component({
   selector: 'app-planet-detail',
   templateUrl: './planet-detail.component.html',
@@ -16,7 +26,12 @@ export class PlanetDetailComponent implements OnInit {
 
   planet!: IPlanet;
   pChanges!: PlanetaryChanges[];
-  graphData = {};
+
+  graphData: GData[] =  [
+   {"name": "energy", "series": []},
+    {"name": "greenhouse", "series": []},
+    {"name": "average_temperature", "series": []}
+  ];
 
   image = '';
 
@@ -37,10 +52,13 @@ export class PlanetDetailComponent implements OnInit {
               this.pChanges = plntchg;
               //console.log(this.pChanges);
               this.pChanges.map(pc => {
-                for(let key in pc){
-                //  this.graphData[key]
-                }
-              })
+
+                  this.graphData.find(d => d.name === 'energy')?.series.push({name:pc.time,value:pc.energy}); 
+                  this.graphData.find(d => d.name === 'greenhouse')?.series.push({name:pc.time,value:pc.greenhouse}); 
+                  this.graphData.find(d => d.name === 'average_temperature')?.series.push({name:pc.time,value:pc.average_temperature});
+              });
+              console.log(this.graphData);
+              this.graphData = [...this.graphData];
              }
           );
         },
@@ -51,27 +69,14 @@ export class PlanetDetailComponent implements OnInit {
   }
 
 /////////////////Per el grafic
-  multi: any[] = [{
-    "name": "energy",
-    "series": []
-  },
-  {
-    "name": "greenhouse",
-    "series": []
-  },
+  multi: any[] = [
+  {"name": "energy", "series": []},
+  {"name": "greenhouse", "series": []},
+  {"name": "emission", "series": []},
+  {"name": "average_temperature", "series": []}
+];
 
-  {
-    "name": "emission",
-    "series": []
-  },
-  {
-    "name": "average_temperature",
-    "series": []
-  }];
-
-
-
-  view: any[] = [700, 700];
+  view: [number,number] = [700, 700]; 
 
   // options
   legend: boolean = true;
