@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SunComponent implements OnInit {
 
+  orbits: any[] = [1,2,3];
+
   constructor() { }
 
   ngOnInit(): void {

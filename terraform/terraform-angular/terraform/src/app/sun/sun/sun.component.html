@@ -10,7 +10,10 @@
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink">
        
-          <image id="svgSol" href="/img/sol.png" height="80" width="80" x="310" y="310"/>
+          <image id="svgSol" href="/assets/img/sol.png" height="80" width="80" x="310" y="310"/>
+          <circle cx="circle.cx" cy="circle.cy" r="circle.r" stroke="grey" stroke-width="2" 
+          fill-opacity="0" *ngFor="let circle of orbits"></circle>
+         
       </svg>
         </div>
         <div class="">
