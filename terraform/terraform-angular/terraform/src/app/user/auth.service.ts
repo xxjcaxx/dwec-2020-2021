@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { IUser } from './i-user';
 
@@ -9,12 +9,17 @@ import { IUser } from './i-user';
 })
 export class AuthService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.loguedInfo = new BehaviorSubject<boolean>(false);
+  }
 
   auth(user: IUser): Observable<IUser>{
     return this.http.get<IUser>('/assets/user.json')
     .pipe(map(u =>{
-      if (u.token) localStorage.setItem('token',u.token);
+      if (u.token) {
+        localStorage.setItem('token',u.token);
+        this.loguedInfo.next(true)
+    }
       return u;
     }));
   }
@@ -22,29 +27,20 @@ export class AuthService {
   isAuth(): boolean{
     if (localStorage.getItem('token')){
       //console.log(localStorage.getItem('token'));
-      
+
       return true;
     }
     else{
       return false;
     }
   }
-
+  private loguedInfo: BehaviorSubject<boolean>;
   isLogued(): Observable<boolean>{
-    const logObservable = new Observable<boolean>(
-      observer =>{
-        let logued: boolean;
-        if (localStorage.getItem('token')) logued = true;
-        else logued = false;
-
-        observer.next(logued);
-       
-      }
-    );
-    return logObservable;
+    return this.loguedInfo.asObservable()
   }
 
   logOut(){
     localStorage.removeItem('token');
+    this.loguedInfo.next(false);
   }
 }
