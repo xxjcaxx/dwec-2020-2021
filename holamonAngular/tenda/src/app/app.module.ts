@@ -19,6 +19,7 @@ import { ProductFilterPipe } from './pipes/product-filter.pipe';
 import { FormsModule } from '@angular/forms';
 import { ProductEditComponent } from './product/product-edit/product-edit.component';
 import { LoginComponent } from './components/login/login.component';
+import { ResaltadoDirective } from './directives/resaltado.directive';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { LoginComponent } from './components/login/login.component';
     ProductItemComponent,
     ProductFilterPipe,
     ProductEditComponent,
-    LoginComponent
+    LoginComponent,
+    ResaltadoDirective
   ],
   imports: [
     BrowserModule,
