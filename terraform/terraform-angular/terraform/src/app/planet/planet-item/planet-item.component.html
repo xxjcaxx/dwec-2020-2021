@@ -2,9 +2,9 @@
     <div class="card  h-100">
         <img [src]="image"  class="card-img-top" alt="...">
         <div class="card-body">
-          <h3 class="card-title">{{planet.name | uppercase}}</h3>
-          <p class="card-text"> {{planet.id}} </p>
-          <p  class="card-text">{{planet.average_temperature | number | temperature}}</p>
+          <h3 class="card-title">{{planet?.name | uppercase}}</h3>
+          <p class="card-text"> {{planet?.id}} </p>
+          <p  class="card-text">{{planet?.average_temperature}}</p>
           <a [routerLink]="['/planet',planet.id]" class="btn btn-primary">Details</a>
         </div>
       </div>

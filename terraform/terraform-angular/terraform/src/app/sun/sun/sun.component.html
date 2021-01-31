@@ -1,1 +1,25 @@
-<p>sun works!</p>
+<div class="" id="sunSystemModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="">
+      <div class="">
+        <div class="">
+          <h5 class="" id="sunSystemModalLabel">Modal title</h5>
+         
+        </div>
+        <div class=" bg-dark ">
+        <svg width="700" height="700" id="svgSolarSystem" 
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink">
+       
+          <image id="svgSol" href="/assets/img/sol.png" height="80" width="80" x="310" y="310"/>
+          <circle cx="circle.cx" cy="circle.cy" r="circle.r" stroke="grey" stroke-width="2" 
+          fill-opacity="0" *ngFor="let circle of orbits"></circle>
+         
+      </svg>
+        </div>
+        <div class="">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+        </div>
+      </div>
+    </div>
+  </div>

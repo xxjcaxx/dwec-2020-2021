@@ -16,13 +16,28 @@
           <a class="nav-link"
           [routerLink]="['planets']"
           [routerLinkActive]="['active']"
+          *ngIf="logued"
           >Planetes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+          [routerLink]="['suns']"
+          [routerLinkActive]="['active']"
+          *ngIf="logued"
+          >Sols</a>
         </li>
         <li class="nav-item">
           <a class="nav-link"
           [routerLink]="['login']"
           [routerLinkActive]="['active']"
+          *ngIf="!logued"
           >Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link"
+          (click)="logout()"
+          *ngIf="logued"
+          >Logout</a>
         </li>
         <li class="nav-item">
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
