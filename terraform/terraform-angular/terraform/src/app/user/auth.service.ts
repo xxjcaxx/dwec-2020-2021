@@ -27,10 +27,11 @@ export class AuthService {
   isAuth(): boolean{
     if (localStorage.getItem('token')){
       //console.log(localStorage.getItem('token'));
-
+      this.loguedInfo.next(true);
       return true;
     }
     else{
+      this.loguedInfo.next(false);
       return false;
     }
   }

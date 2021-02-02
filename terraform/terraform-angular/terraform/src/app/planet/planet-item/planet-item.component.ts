@@ -10,9 +10,11 @@ import { IPlanet } from '../i-planet';
 export class PlanetItemComponent implements OnInit {
   @Input() planet!: IPlanet;
   image = '';
+  color = "red";
   constructor() { }
 
   ngOnInit(): void {
+    this.color = ['red','orange','blue'][Math.floor(Math.random()*3)];
     if (this.planet.image !== undefined) {
       this.image = `data:image/jpg;base64,${this.planet.image}`
     }

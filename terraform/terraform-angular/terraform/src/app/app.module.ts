@@ -18,6 +18,7 @@ import { TemperaturePipe } from './pipes/temperature.pipe';
 import { FilterPlanetPipe } from './planet/pipes/filter-planet.pipe';
 import { FormsModule } from '@angular/forms';
 import { SunComponent } from './sun/sun/sun.component';
+import { ResaltadoDirective } from './directives/resaltado.directive';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { SunComponent } from './sun/sun/sun.component';
     PlanetDetailComponent,
     TemperaturePipe,
     FilterPlanetPipe,
-    SunComponent
+    SunComponent,
+    ResaltadoDirective
   ],
   imports: [
     BrowserModule,
