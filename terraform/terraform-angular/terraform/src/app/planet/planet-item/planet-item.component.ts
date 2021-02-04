@@ -14,14 +14,14 @@ export class PlanetItemComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.color = ['red','orange','blue'][Math.floor(Math.random()*3)];
+    this.color = ['red', 'orange', 'blue'][Math.floor(Math.random() * 3)];
     if (this.planet.image !== undefined) {
       this.image = `data:image/jpg;base64,${this.planet.image}`
     }
     else {
-        this.image = '/assets/img/default-placeholder.png'
+      this.image = '/assets/img/default-placeholder.png'
     }
-    if (! this.planet.average_temperature) this.planet.average_temperature = 0;
+    if (!this.planet.average_temperature) this.planet.average_temperature = 0;
   }
 
 }
