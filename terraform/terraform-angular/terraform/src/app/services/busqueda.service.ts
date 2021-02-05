@@ -18,7 +18,7 @@ export class BusquedaService {
 
   setCriteri(c: string): void{
     this.criteri.next(c);
-    //console.log(c);
+    //console.log(c); 
     
   }
 
