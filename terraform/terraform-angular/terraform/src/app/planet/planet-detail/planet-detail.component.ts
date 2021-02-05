@@ -28,6 +28,8 @@ export class PlanetDetailComponent implements OnInit {
   image = '';
 
   ngOnInit(): void {
+    //console.log('init planeta');
+
     this.activatedRoute.params.subscribe(p => {
       this.planet = {name: 'Loading', id: p.id, image: '/assets/img/default-placeholder.png'}
       this.planetService.getPlanet(p.id).subscribe(
@@ -45,11 +47,11 @@ export class PlanetDetailComponent implements OnInit {
               //console.log(this.pChanges);
               this.pChanges.map(pc => {
 
-                  this.graphData.find(d => d.name === 'energy')?.series.push({name:pc.time,value:pc.energy}); 
-                  this.graphData.find(d => d.name === 'greenhouse')?.series.push({name:pc.time,value:pc.greenhouse}); 
+                  this.graphData.find(d => d.name === 'energy')?.series.push({name:pc.time,value:pc.energy});
+                  this.graphData.find(d => d.name === 'greenhouse')?.series.push({name:pc.time,value:pc.greenhouse});
                   this.graphData.find(d => d.name === 'average_temperature')?.series.push({name:pc.time,value:pc.average_temperature});
               });
-              console.log(this.graphData);
+             // console.log('datos: ',this.graphData);
               this.graphData = [...this.graphData];
              }
           );
@@ -68,7 +70,7 @@ export class PlanetDetailComponent implements OnInit {
   {"name": "average_temperature", "series": []}
 ];
 */
-/*  view: [number,number] = [700, 700]; 
+/*  view: [number,number] = [700, 700];
 
   // options
   legend: boolean = true;
