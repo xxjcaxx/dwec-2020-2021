@@ -19,6 +19,9 @@ import { FilterPlanetPipe } from './planet/pipes/filter-planet.pipe';
 import { FormsModule } from '@angular/forms';
 import { SunComponent } from './sun/sun/sun.component';
 import { ResaltadoDirective } from './directives/resaltado.directive';
+import { MostrarGraficaDirective } from './directives/mostrar-grafica.directive';
+import { ForDelayDirective } from './directives/for-delay.directive';
+import { GraphsComponent } from './components/graphs/graphs.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +36,10 @@ import { ResaltadoDirective } from './directives/resaltado.directive';
     TemperaturePipe,
     FilterPlanetPipe,
     SunComponent,
-    ResaltadoDirective
+    ResaltadoDirective,
+    MostrarGraficaDirective,
+    ForDelayDirective,
+    GraphsComponent
   ],
   imports: [
     BrowserModule,

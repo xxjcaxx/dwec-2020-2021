@@ -1,17 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { GData } from 'src/app/interfaces/g-data';
 import { IPlanet } from '../i-planet';
 import { PlanetService } from '../planet.service';
 import { PlanetaryChanges } from '../planetary-changes';
-
-interface Series{
-  name: string;
-  value: number;
-}
-interface GData {
-  name: string;
-  series: Array<Series>;
-}
 
 
 @Component({
@@ -69,14 +61,14 @@ export class PlanetDetailComponent implements OnInit {
   }
 
 /////////////////Per el grafic
-  multi: any[] = [
+ /* multi: any[] = [
   {"name": "energy", "series": []},
   {"name": "greenhouse", "series": []},
   {"name": "emission", "series": []},
   {"name": "average_temperature", "series": []}
 ];
-
-  view: [number,number] = [700, 700]; 
+*/
+/*  view: [number,number] = [700, 700]; 
 
   // options
   legend: boolean = true;
@@ -105,6 +97,6 @@ export class PlanetDetailComponent implements OnInit {
   onDeactivate(data: any): void {
     console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
-
+*/
 
 }
