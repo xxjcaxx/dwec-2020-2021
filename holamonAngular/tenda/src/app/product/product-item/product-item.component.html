@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" [appMostrarMes]="[mostrar1,mostrar2]">
   <img src="..." class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title">{{p.name}}</h5>
@@ -11,7 +11,8 @@
        {{ i <= auxRatting ? '★' : '☆' }}
      </span>
     </p>
-    <p class="card-text">{{p.description | slice:0:50}}</p>
+    <p class="card-text" #mostrar1>{{p.description | slice:0:50}}</p>
+    <p class="card-text" #mostrar2 style="display: none;">{{p.description}}</p>
     <button class="btn btn-outline-primary" (click)="detailsProduct(p.id)">Detalls</button>
    <!--<a [routerLink]="['/product',p.id]" class="btn btn-outline-primary">Detalls</a> -->
   </div>
