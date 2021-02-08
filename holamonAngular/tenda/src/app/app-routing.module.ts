@@ -9,6 +9,7 @@ import { LeavePageGuard } from './product/guards/leave-page.guard';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ProductResolver } from './product/product-resolver.service';
+import { ProductNewComponent } from './product/product-new/product-new.component';
 
 
 const routes: Routes = [
@@ -22,10 +23,15 @@ const routes: Routes = [
  canActivate: [ProductDetailGuard],
  component: ProductDetailComponent},
  { path: 'product/edit/:id',
- canActivate: [ProductDetailGuard],
+ canActivate: [ProductDetailGuard, AuthGuard],
  canDeactivate: [LeavePageGuard],
  resolve: { product: ProductResolver},
  component: ProductEditComponent},
+ { path: 'products/new',
+ canActivate: [AuthGuard],
+ canDeactivate: [LeavePageGuard],
+ component: ProductNewComponent},
+
  { path: '**', pathMatch: 'full', redirectTo: 'home'}
 ];
 
