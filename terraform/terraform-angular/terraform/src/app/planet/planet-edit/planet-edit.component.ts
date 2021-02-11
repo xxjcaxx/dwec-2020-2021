@@ -17,8 +17,7 @@ export class PlanetEditComponent implements OnInit {
       this.formulario = this.formBuilder.group({
         name: ['',[Validators.required, Validators.minLength(2)]],
         average_temperature: [0,this.minTempValidator(-50)],
-        co2: [50],
-        temp_history: this.formBuilder.array([])
+        co2: [50]
       },{validators: this.tempValidator});
     }
 
@@ -47,8 +46,7 @@ export class PlanetEditComponent implements OnInit {
   this.planet = this.activatedRoute.snapshot.data['planet'];
   this.formulario.setValue({name: this.planet.name, 
     average_temperature: this.planet.average_temperature,
-  co2: this.planet.co2,
-temp_history: []});
+  co2: this.planet.co2});
   }
 
   editar(){
