@@ -6,5 +6,6 @@
             <p class="card-text"> {{planet?.id}} </p>
             <p #display1 class="card-text planet-temperature" style="display: none;">{{planet?.average_temperature}}</p>
             <a [routerLink]="['/planet',planet.id]" class="btn btn-primary">Details</a>
+            <a [routerLink]="['/planet','edit',planet.id]" class="btn btn-primary">Edit</a>
         </div>
     </div>

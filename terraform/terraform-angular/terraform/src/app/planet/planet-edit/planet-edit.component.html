@@ -1,0 +1,30 @@
+<div class="container">
+<form class="row g-3" [formGroup]="formulario" (ngSubmit)="editar()" novalidate>
+    <div class="col-md-6">
+      <label for="inputName" class="form-label">Name</label>
+      <input type="text" class="form-control" id="inputName"
+      name="name" formControlName="name"
+      [(ngModel)]="planet.name"
+      [ngClass]="nameNovalid ? 'is-invalid' : 'is-valid'"
+      >
+      
+    </div>
+    <div class="col-md-6">
+      <label for="inputTemperature" class="form-label">Average Temperature</label>
+      <input type="number" class="form-control" id="inputTemperature"
+      name="temperature" formControlName="average_temperature"
+      [(ngModel)]="planet.average_temperature"
+      >
+    </div>
+
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+  </form>
+
+<hr>
+  <pre>
+     form: {{formulario.value | json}}
+     valid: {{formulario.valid}}
+  </pre>
+  </div>

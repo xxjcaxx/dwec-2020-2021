@@ -4,7 +4,9 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { PlanetDetailComponent } from './planet/planet-detail/planet-detail.component';
+import { PlanetEditComponent } from './planet/planet-edit/planet-edit.component';
 import { PlanetListComponent } from './planet/planet-list/planet-list.component';
+import { PlanetResolveService } from './planet/planet-resolve.service';
 import { SunComponent } from './sun/sun/sun.component';
 
 const routes: Routes = [
@@ -18,6 +20,10 @@ const routes: Routes = [
   {path: 'planet/:id', 
   canActivate: [AuthGuard], 
   component: PlanetDetailComponent},
+  {path: 'planet/edit/:id', 
+  canActivate: [AuthGuard], 
+  resolve: {planet: PlanetResolveService},
+  component: PlanetEditComponent},
   {path: 'login', component: LoginComponent},
   {path: '**', pathMatch: 'full', redirectTo: 'home'}
 ];
