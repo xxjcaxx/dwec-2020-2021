@@ -19,7 +19,7 @@ export class PlanetResolveService implements Resolve<IPlanet>{
   //  console.log('resole');
     
     return this.planetService.getPlanet(route.params.id)
-    /*.pipe(
+   /* .pipe(
       catchError(error => {this.router.navigate(['/planets']);
       return of(null);
     })

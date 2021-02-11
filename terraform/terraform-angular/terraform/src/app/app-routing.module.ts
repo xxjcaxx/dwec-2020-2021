@@ -20,10 +20,12 @@ const routes: Routes = [
   {path: 'planet/:id', 
   canActivate: [AuthGuard], 
   component: PlanetDetailComponent},
+
   {path: 'planet/edit/:id', 
   canActivate: [AuthGuard], 
   resolve: {planet: PlanetResolveService},
   component: PlanetEditComponent},
+  
   {path: 'login', component: LoginComponent},
   {path: '**', pathMatch: 'full', redirectTo: 'home'}
 ];

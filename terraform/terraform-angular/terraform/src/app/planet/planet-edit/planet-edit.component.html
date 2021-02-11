@@ -4,8 +4,8 @@
       <label for="inputName" class="form-label">Name</label>
       <input type="text" class="form-control" id="inputName"
       name="name" formControlName="name"
-      [(ngModel)]="planet.name"
-      [ngClass]="nameNovalid ? 'is-invalid' : 'is-valid'"
+      [ngClass]="{'is-valid': nameNovalid.valid && nameNovalid.touched,
+    'is-invalid': nameNovalid.invalid && nameNovalid.touched}"
       >
       
     </div>
@@ -13,9 +13,26 @@
       <label for="inputTemperature" class="form-label">Average Temperature</label>
       <input type="number" class="form-control" id="inputTemperature"
       name="temperature" formControlName="average_temperature"
-      [(ngModel)]="planet.average_temperature"
       >
     </div>
+
+    <div class="col-md-6">
+      <label for="inputCo2" class="form-label">Co2</label>
+      <input type="number" class="form-control" id="inputCo2"
+      name="co2" formControlName="co2"
+      >
+    </div>
+
+    <table>
+      <tr *ngFor="let t of tempHistory.controls; let i=index">
+        <td><input type="number" class="form-control" id="inputCo2"
+          name="co2" [formControlName]="i"
+          ></td>
+        <td> <button type="button" (click)="removeTH(i)" class="btn btn-primary">Add</button>
+        </td>
+      </tr>
+    </table>
+    <button type="button" (click)="addTH()" class="btn btn-primary">Add</button>
 
     <div class="col-12">
       <button type="submit" class="btn btn-primary">Save</button>
