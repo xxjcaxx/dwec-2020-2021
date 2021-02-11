@@ -20,6 +20,8 @@ import { FormsModule } from '@angular/forms';
 import { ProductEditComponent } from './product/product-edit/product-edit.component';
 import { LoginComponent } from './components/login/login.component';
 import { ResaltadoDirective } from './directives/resaltado.directive';
+import { MostrarMesDirective } from './directives/mostrar-mes.directive';
+import { MinPriceDirective } from './directives/validators/min-price.directive';
 
 
 @NgModule({
@@ -33,7 +35,9 @@ import { ResaltadoDirective } from './directives/resaltado.directive';
     ProductFilterPipe,
     ProductEditComponent,
     LoginComponent,
-    ResaltadoDirective
+    ResaltadoDirective,
+    MostrarMesDirective,
+    MinPriceDirective,
   ],
   imports: [
     BrowserModule,
@@ -41,7 +45,7 @@ import { ResaltadoDirective } from './directives/resaltado.directive';
     HttpClientModule,
     FormsModule,
   ],
-  providers: [ProductsService],
+  providers: [ProductsService, MinPriceDirective],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

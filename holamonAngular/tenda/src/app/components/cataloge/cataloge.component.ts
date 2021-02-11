@@ -15,7 +15,7 @@ export class CatalogeComponent implements OnInit {
     // private router: Router
     // el router ja no fa falta perquè està en el component product-item
   ) { }
-  products: Product[] = [];
+  products: Product[];
   searchProduct: string;
 
   ngOnInit(): void {
@@ -34,9 +34,6 @@ export class CatalogeComponent implements OnInit {
           () => console.log('Products loaded', this.products) // Finally function (optional)
         );
       }
-
-
-
     });
 
     /* this.productsService.getProducts().subscribe(

@@ -1,1 +1,55 @@
-EDITAR
+<div class="card">
+  <div class="card-header bg-success text-white">Editar producto</div>
+  <div class="card-body">
+    <div>
+      <form #productForm="ngForm" (ngSubmit)="editar()" novalidate #editForm>
+        <input type="text" name="name" class="form-control" [(ngModel)]="product.name"
+        minlength="1" maxlength="60" required  #nameModel="ngModel"
+        [ngClass]="{
+          'is-valid': nameModel.touched && nameModel.valid,
+          'is-invalid': nameModel.touched && !nameModel.valid
+        }"/>
+        <div *ngIf="nameModel.touched && nameModel.invalid"
+        class="alert alert-danger">
+        Nombre requerido (entre 1 y 60 caracteres)</div>
+        <input type="number" name="price" class="form-control" [(ngModel)]="product.price"
+        required appMinPrice="0"  #priceModel="ngModel"
+        [ngClass]="{
+          'is-valid': priceModel.touched && priceModel.valid,
+          'is-invalid': priceModel.touched && !priceModel.valid
+        }"/>
+        <div *ngIf="priceModel.touched && priceModel.invalid"
+        class="alert alert-danger">
+        Precio requerido (> 0)</div>
+        <input
+          type="text"
+          name="description"
+          class="form-control"
+          [(ngModel)]="product.description"
+          minlength="5"
+          maxlength="600"
+          required
+          #descriptionModel="ngModel"
+          [ngClass]="{
+            'is-valid': descriptionModel.touched && descriptionModel.valid,
+            'is-invalid': descriptionModel.touched && !descriptionModel.valid
+          }"
+        />
+        <div *ngIf="descriptionModel.touched && descriptionModel.invalid"
+        class="alert alert-danger">
+        Descripción requerida (entre 5 y 600 caracteres)</div>
+        <button type="submit" class="btn btn-primary"
+        [disabled]="productForm.invalid"> Submit </button>
+      </form>
+    </div>
+    <div>{{ product | json }}</div>
+    <div>Dirty: {{ descriptionModel.dirty }}</div>
+    <div>Valid: {{ descriptionModel.valid }}</div>
+    <div>Value: {{ descriptionModel.value }}</div>
+    <div>Errors: {{ descriptionModel.errors | json }}</div>
+    <div>Touched: {{ productForm.touched }}</div>
+    <div>Valid: {{ productForm.valid }}</div>
+    <div>Value: {{ productForm.value | json }}</div>
+    <div>Descripción: {{productForm.control.get('description').value | json}}</div>
+  </div>
+</div>

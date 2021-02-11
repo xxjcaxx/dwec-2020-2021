@@ -8,6 +8,7 @@ import { ProductEditComponent } from './product/product-edit/product-edit.compon
 import { LeavePageGuard } from './product/guards/leave-page.guard';
 import { LoginComponent } from './components/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
+import { ProductResolver } from './product/product-resolver.service';
 
 
 const routes: Routes = [
@@ -23,6 +24,7 @@ const routes: Routes = [
  { path: 'product/edit/:id',
  canActivate: [ProductDetailGuard],
  canDeactivate: [LeavePageGuard],
+ resolve: { product: ProductResolver},
  component: ProductEditComponent},
  { path: '**', pathMatch: 'full', redirectTo: 'home'}
 ];

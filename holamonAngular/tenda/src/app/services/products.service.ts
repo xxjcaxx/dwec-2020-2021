@@ -27,6 +27,10 @@ export class ProductsService {
       );
   }
 
+  editProduct(p: Product): Observable<boolean>{
+    return this.http.get<boolean>(this.productURL);  // no funciona però cal fer alguna funció
+  }
+
   searchProducts(criteri: string): Observable<Product[]>{
     criteri = criteri.toLowerCase();
     console.log({criteri});

@@ -12,11 +12,12 @@ export class GraphsComponent implements OnInit {
   public graphData: GData[] = [];
 
   ngOnInit(): void {
-    //console.log(this.graphData[0]['series'].length);
-    
+  //  console.log('init graph');
+
+
   }
 
-  view: [number,number] = [700, 700]; 
+  view: [number,number] = [700, 700];
 
   // options
   legend: boolean = true;
