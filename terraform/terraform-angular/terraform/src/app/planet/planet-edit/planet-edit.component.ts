@@ -29,7 +29,7 @@ export class PlanetEditComponent implements OnInit {
   this.planet = this.activatedRoute.snapshot.data['planet'];
   }
 
-  editar(planetForm: NgForm){
+  editar(){
 
   }
 

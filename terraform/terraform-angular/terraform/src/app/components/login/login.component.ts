@@ -29,4 +29,11 @@ export class LoginComponent implements OnInit {
   );
   }
 
+  loginOdoo(){
+    this.auth.authServer(this.user).subscribe(
+      u => console.log(u)
+      
+    );
+  }
+
 }
