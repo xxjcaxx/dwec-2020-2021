@@ -1,12 +1,15 @@
 <div class="container">
+  
 <form class="row g-3" [formGroup]="formulario" (ngSubmit)="editar()" novalidate>
     <div class="col-md-6">
       <label for="inputName" class="form-label">Name</label>
-      <input type="text" class="form-control" id="inputName"
+     <input type="text" class="form-control" id="inputName"
       name="name" formControlName="name"
-      [ngClass]="{'is-valid': nameNovalid.valid && nameNovalid.touched,
-    'is-invalid': nameNovalid.invalid && nameNovalid.touched}"
-      >
+      
+      [ngClass]="{'is-valid': nameNovalid?.valid && nameNovalid?.touched,
+    'is-invalid': nameNovalid?.invalid && nameNovalid?.touched}"
+      > 
+  
       
     </div>
     <div class="col-md-6">
@@ -37,6 +40,8 @@
     <div class="col-12">
       <button type="submit" class="btn btn-primary">Save</button>
     </div>
+
+ 
   </form>
 
 <hr>
@@ -44,4 +49,7 @@
      form: {{formulario.value | json}}
      valid: {{formulario.valid}}
   </pre>
+
+
   </div>
+

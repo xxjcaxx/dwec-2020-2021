@@ -24,11 +24,7 @@ export class PlanetService {
       (this.planetsURL,this.postBody,this.postOptions) // el POST necessita url, body i opcions
       .pipe(map(response => response.result)) // al resultat, amb pipe se li passa la funció fletxa
       // per a extraure de la resposta l'atribut que és l'array de planetes
-    /* obs.subscribe(
-        a=> console.log(a),
-        e=>console.log(e),
-        ()=>console.log('log')
-        );*/
+    
       return obs;
   }
   getPlanet(id: number): Observable<IPlanet>{

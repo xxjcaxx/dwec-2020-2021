@@ -24,6 +24,8 @@ import { ForDelayDirective } from './directives/for-delay.directive';
 import { GraphsComponent } from './components/graphs/graphs.component';
 import { PlanetEditComponent } from './planet/planet-edit/planet-edit.component';
 
+import {MatInputModule} from '@angular/material/input'; 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +43,8 @@ import { PlanetEditComponent } from './planet/planet-edit/planet-edit.component'
     MostrarGraficaDirective,
     ForDelayDirective,
     GraphsComponent,
-    PlanetEditComponent
+    PlanetEditComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -50,7 +53,10 @@ import { PlanetEditComponent } from './planet/planet-edit/planet-edit.component'
     HttpClientModule, 
     NgxChartsModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatInputModule
+  
+ 
   ],
   providers: [PlanetService],
   bootstrap: [AppComponent]
