@@ -1,0 +1,17 @@
+<li appMostrarMes [elementMostrar]="ocultar"
+class="list-group-item list-group-item d-flex justify-content-between align-items-center">
+  <div class="" style="max-width: 100px;">
+  <img class="img-fluid rounded" [src]="placa.photo">
+</div>
+<div>
+<div>
+  <p style="margin-bottom: 0;">Identificador: {{placa.id}}</p>
+  <p style="margin-bottom: 0;"> Client: {{placa.client}}</p>
+  <p style="margin-bottom: 0;"> Potencia: {{placa.power}}W</p>
+  <p #ocultar style="margin-bottom: 0; display:none ">
+    Producció: <span *appForDelay="100; let p of placa.production">{{p}}W </span>
+  </p>
+</div>
+</div>
+  <a class="btn btn-dark " [routerLink]="['/placa',placa.id]">Detalls</a>
+</li>

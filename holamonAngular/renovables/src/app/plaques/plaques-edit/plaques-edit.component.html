@@ -1,0 +1,65 @@
+<div class="container">
+<form class="row g-3" #formPlaca="ngForm" (ngSubmit)="editar()" novalidate>
+  <div class="col-md-6">
+    <label for="identificador" class="form-label">Identificador</label>
+    <input type="text" class="form-control"
+    name="identificador"
+    id="identificador"
+    [(ngModel)]="placa.id"
+    #inputId="ngModel"
+    required
+    minlength="5"
+    maxlength="20"
+
+    [ngClass]="{'is-valid': inputId.valid && inputId.touched,
+    'is-invalid': inputId.invalid && inputId.touched}"
+    >
+    <div *ngIf="inputId.touched && inputId.invalid"
+       class="alert alert-danger">Id requerido</div>
+
+  </div>
+  <div class="col-md-6">
+    <label for="client" class="form-label">Client</label>
+    <input type="text" class="form-control"
+    name="client"  id="client" [(ngModel)]="placa.client"
+    #inputClient="ngModel"
+    required
+    [ngClass]="{'is-valid': inputClient.valid && inputClient.touched,
+    'is-invalid': inputClient.invalid && inputClient.touched}"
+    >
+    <div *ngIf="inputClient.touched && inputClient.invalid"
+    class="alert alert-danger">Cliente requerido</div>
+  </div>
+  <div class="col-md-6">
+    <label for="potencia" class="form-label">Potencia</label>
+    <input type="text" class="form-control"
+    name="power" id="potencia" [(ngModel)]="placa.power"
+    #inputPower="ngModel"
+    required
+    pattern="^[0-9]+$"
+    appMinPower="100"
+    [ngClass]="{'is-valid': inputPower.valid && inputPower.touched,
+    'is-invalid': inputPower.invalid && inputPower.touched}"
+      >
+      <div *ngIf="inputPower.touched && inputPower.invalid"
+    class="alert alert-danger">Ha de ser un numero</div>
+  </div>
+  <div class="col-12">
+    <label for="produccio" class="form-label">Producció</label>
+    <input type="text" class="form-control" [(ngModel)]="placa.production"
+    name="produccio" id="produccio">
+  </div>
+  <div class="col-12">
+    <button type="submit"
+
+    class="btn btn-primary">Actualitzar</button>
+  </div>
+</form>
+
+<hr>
+<pre>
+id: {{inputId.valid}}
+formulari: {{formPlaca.value | json}}
+formulari valid: {{formPlaca.valid}}
+</pre>
+</div>

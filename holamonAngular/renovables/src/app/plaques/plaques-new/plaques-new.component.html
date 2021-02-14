@@ -1,0 +1,64 @@
+<div class="container">
+  <form class="row g-3" [formGroup]="formPlaca">
+    <div class="col-md-6">
+      <label for="identificador" class="form-label">Identificador</label>
+      <input type="text" class="form-control"
+      name="identificador"
+      id="identificador"
+      formControlName="id"
+      [ngClass]="{'is-valid': idValid, 'is-invalid': idValid==false}"
+      >
+      <div *ngIf="idValid==false"
+      class="alert alert-danger">Id requerido</div>
+
+    </div>
+    <div class="col-md-6">
+      <label for="client" class="form-label">Client</label>
+      <input type="text" class="form-control"
+      name="client"  id="client"
+      formControlName="client"
+      [ngClass]="{'is-valid': clientValid.valid && clientValid.touched,
+    'is-invalid': clientValid.invalid && clientValid.touched}"
+      >
+      <div *ngIf="clientValid.touched && clientValid.invalid"
+      class="alert alert-danger">Cliente requerido</div>
+
+    </div>
+    <div class="col-md-6">
+      <label for="potencia" class="form-label">Potencia</label>
+      <input type="number" class="form-control"
+      name="power"  id="potencia"
+      formControlName="power"
+      [ngClass]="{'is-valid': powerValid.valid && powerValid.touched,
+      'is-invalid': powerValid.invalid && powerValid.touched}"
+        >
+        <div *ngIf="powerValid.touched && powerValid.invalid"
+        class="alert alert-danger">Potencia requerida</div>
+
+    </div>
+    <label class="form-label">Production:</label>
+    <div class="row row-cols-6 g-3" formArrayName="production">
+      <div class="col" *ngFor="let p of productionArray.controls; let i=index" >
+
+        <input type="number" class="form-control col" [formControlName]="i"
+         aria-label="production1"
+        >
+        <button  type="button" class="col btn btn-outline-danger" (click)="delProduction(i)">🗑</button>
+
+      </div>
+      <button  type="button" class="col btn btn-primary" (click)="addProduction()">Add Production</button>
+    </div>
+
+    <div class="col-12">
+      <button type="submit"
+
+      class="btn btn-primary">Actualitzar</button>
+    </div>
+  </form>
+
+  <hr>
+  <pre>
+    valid: {{formPlaca.valid}}
+formulari: {{formPlaca.value | json}}
+  </pre>
+  </div>
