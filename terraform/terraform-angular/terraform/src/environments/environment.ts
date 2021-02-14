@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  //url: 'http://10.100.23.100:8069/terraform/terraform/'
-  url: 'http://192.168.88.72:8069/terraform/terraform/'
+  url: 'http://10.100.23.100:8069/terraform/terraform/'
+  //url: 'http://192.168.88.72:8069/terraform/terraform/'
 };
 
 /*

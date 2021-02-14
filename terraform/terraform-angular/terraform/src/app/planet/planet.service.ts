@@ -12,7 +12,7 @@ import { PlanetaryChanges } from './planetary-changes';
 export class PlanetService {
 
   planetsURL = environment.url+'terraform.planet';  // La URL la guarde en enviroment
-  postBody = `{"jsonrpc":"2.0","method":"call","params":{"f1":"player","f2":"=","f3":749}}`;
+  postBody = `{"jsonrpc":"2.0","method":"call","params":{"f1":"player","f2":"=","f3":${localStorage.getItem('id')}}}`;
   postOptions = { headers: new HttpHeaders({ "Content-type": "application/json; charset=UTF-8" })};
 
   constructor( private http: HttpClient) {   }
@@ -24,11 +24,7 @@ export class PlanetService {
       (this.planetsURL,this.postBody,this.postOptions) // el POST necessita url, body i opcions
       .pipe(map(response => response.result)) // al resultat, amb pipe se li passa la funció fletxa
       // per a extraure de la resposta l'atribut que és l'array de planetes
-    /* obs.subscribe(
-        a=> console.log(a),
-        e=>console.log(e),
-        ()=>console.log('log')
-        );*/
+    
       return obs;
   }
   getPlanet(id: number): Observable<IPlanet>{

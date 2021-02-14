@@ -16,12 +16,15 @@ import { PlanetDetailComponent } from './planet/planet-detail/planet-detail.comp
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { TemperaturePipe } from './pipes/temperature.pipe';
 import { FilterPlanetPipe } from './planet/pipes/filter-planet.pipe';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SunComponent } from './sun/sun/sun.component';
 import { ResaltadoDirective } from './directives/resaltado.directive';
 import { MostrarGraficaDirective } from './directives/mostrar-grafica.directive';
 import { ForDelayDirective } from './directives/for-delay.directive';
 import { GraphsComponent } from './components/graphs/graphs.component';
+import { PlanetEditComponent } from './planet/planet-edit/planet-edit.component';
+
+import {MatInputModule} from '@angular/material/input'; 
 
 @NgModule({
   declarations: [
@@ -39,7 +42,9 @@ import { GraphsComponent } from './components/graphs/graphs.component';
     ResaltadoDirective,
     MostrarGraficaDirective,
     ForDelayDirective,
-    GraphsComponent
+    GraphsComponent,
+    PlanetEditComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -48,6 +53,10 @@ import { GraphsComponent } from './components/graphs/graphs.component';
     HttpClientModule, 
     NgxChartsModule,
     FormsModule,
+    ReactiveFormsModule,
+    MatInputModule
+  
+ 
   ],
   providers: [PlanetService],
   bootstrap: [AppComponent]
