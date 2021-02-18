@@ -1,0 +1,25 @@
+<div class="container">
+<div class="row">
+  <div class="col-3">
+    <div class="card  h-100">
+      <img [src]="placa.photo" class="card-img-top" alt="...">
+      <div class="card-body">
+        <h3 class="card-title">{{placa.id | slice:7:10}}</h3>
+        <p class="card-text">{{placa.client | uppercase}}</p>
+        <p class="card-text">{{placa.power | toKW}}</p>
+        <a [routerLink]="['/plaques']" class="btn btn-dark">Llista de plaques</a>
+        <a [routerLink]="['/placa','edit',placa.id]" class="btn btn-dark">Editar</a>
+      </div>
+    </div>
+
+  </div>
+  <div class="col-6">
+    <div class="card  h-100">
+      <div class="card-body">
+
+      </div>
+    </div>
+
+  </div>
+  </div>
+</div>

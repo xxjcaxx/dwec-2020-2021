@@ -1,0 +1,13 @@
+<div class="container">
+  <h2>Plaques</h2>
+  <input type="text" name="searchPlaca" id="searchPlaca" [(ngModel)]="criteri"/>
+  <br>
+  <a [routerLink]="['/plaques','new']" class="btn btn-dark">New Placa</a>
+  <div class="row">
+    <div class="col-12 col-sm-12 col-lg-8">
+<ul class="list-group" style="max-width: 900px;">
+  <app-plaques-item [placa]="placa"  *ngFor="let placa of plaques | filterPlaques:criteri"></app-plaques-item>
+</ul>
+</div>
+</div>
+</div>

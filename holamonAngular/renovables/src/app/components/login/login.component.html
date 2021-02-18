@@ -1,0 +1,23 @@
+<div class="row row-cols-1 row-cols-md-2 g-4">
+  <div class="col">
+<form class="form-signin">
+  <img class="mb-4" src="/assets/images/store-logo.png" alt="" width="72" height="72">
+  <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+  <label for="inputEmail" class="sr-only">Email address</label>
+  <input type="text" id="inputEmail" class="form-control"
+  [(ngModel)] = "user.login"
+  name="login"
+  placeholder="Email address" required autofocus>
+  <label for="inputPassword" class="sr-only">Password</label>
+  <input type="password" id="inputPassword" class="form-control"
+  [(ngModel)] = "user.passwd"
+  name="passwd"
+  placeholder="Password" required>
+  <div class="checkbox mb-3">
+    <label>
+      <input type="checkbox" name="recordar" value="remember-me" [(ngModel)]="recordar"> Remember me
+    </label>
+  </div>
+  <button class="btn btn-lg btn-primary btn-block" (click)="login($event);">Sign in</button>
+</form>
+</div></div>
