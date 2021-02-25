@@ -1,4 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { Sun } from '../sun';
+import { SunService } from '../sun.service';
+
+interface Orbit {
+  cx: number;
+  cy: number;
+  r: number;
+}
+
 
 @Component({
   selector: 'app-sun',
@@ -6,11 +15,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SunComponent implements OnInit {
 
-  orbits: any[] = [1,2,3];
+  orbits: Orbit[] = [
+    {cx: 350, cy: 350, r: 100},
+    {cx: 350, cy: 350, r: 200},
+    {cx: 350, cy: 350, r: 300},
+  ];
 
-  constructor() { }
+  suns: Sun[] = [];
+
+  constructor(private sunService: SunService) { }
 
   ngOnInit(): void {
+    this.sunService.getSuns().subscribe(
+      s => this.suns = s,
+      error => console.log(error),
+      ()=> console.log('suns loaded')
+      
+      
+    )
   }
 
 }

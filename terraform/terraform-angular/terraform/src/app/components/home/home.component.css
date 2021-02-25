@@ -1,7 +1,7 @@
 .masthead {
     height: 100vh;
     
-    background-image: url('/assets/img/homeplanet.jpg');
+    background-image: url('/terraform/assets/img/homeplanet.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
